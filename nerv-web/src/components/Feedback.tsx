@@ -23,7 +23,7 @@ export default function Feedback() {
     fetchUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (_event: any, session: any) => {
         if (session?.user?.email) {
           setEmail(session.user.email);
         } else {
@@ -89,9 +89,8 @@ export default function Feedback() {
       <div className="max-w-2xl mx-auto relative z-10">
         {/* Section header */}
         <div
-          className={`mb-16 text-center transition-all duration-1000 ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`mb-16 text-center transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           <div className="flex items-center justify-center gap-3 mb-6">
             <div className="w-8 h-px bg-emerald-400"></div>
@@ -112,9 +111,8 @@ export default function Feedback() {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className={`p-8 md:p-10 rounded-xl border border-white/8 bg-[#050505] flex flex-col gap-8 transition-all duration-1000 delay-200 ${
-            visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+          className={`p-8 md:p-10 rounded-xl border border-white/8 bg-[#050505] flex flex-col gap-8 transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
         >
           {/* Identity */}
           {email ? (
@@ -153,11 +151,10 @@ export default function Feedback() {
           {/* Status message */}
           {message && (
             <div
-              className={`text-xs text-center tracking-[0.2em] uppercase px-4 py-3 rounded-lg ${
-                message.includes("Error") || message.includes("failed")
-                  ? "text-red-400 bg-red-400/5 border border-red-400/15"
-                  : "text-emerald-400 bg-emerald-400/5 border border-emerald-400/15"
-              }`}
+              className={`text-xs text-center tracking-[0.2em] uppercase px-4 py-3 rounded-lg ${message.includes("Error") || message.includes("failed")
+                ? "text-red-400 bg-red-400/5 border border-red-400/15"
+                : "text-emerald-400 bg-emerald-400/5 border border-emerald-400/15"
+                }`}
             >
               {message}
             </div>

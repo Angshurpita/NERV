@@ -31,7 +31,7 @@ export default function Navbar() {
     fetchUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      (_event: any, session: any) => {
         setUser(session?.user ?? null);
         if (session?.user) {
           setIsAuthOpen(false);

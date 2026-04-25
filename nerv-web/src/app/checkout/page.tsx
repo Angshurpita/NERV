@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
 import { generateAuthToken, PlanType } from "@/utils/token";
 import Image from "next/image";
 
-export default function MockCheckout() {
+function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planName = searchParams.get("plan") || "PRO";
@@ -16,9 +16,8 @@ export default function MockCheckout() {
   const [status, setStatus] = useState<"idle" | "processing" | "success">("idle");
   const [user, setUser] = useState<any>(null);
   const supabase = createClient();
-
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user));
+    supabase.auth.getUser().then((res: any) => setUser(res.data.user));
   }, [supabase]);
 
   const handlePayment = async () => {
@@ -149,5 +148,13 @@ export default function MockCheckout() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function MockCheckout() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-black flex items-center justify-center p-6"><div className="w-12 h-12 border-4 border-emerald-400/20 border-t-emerald-400 rounded-full animate-spin"></div></main>}>
+      <CheckoutContent />
+    </Suspense>
   );
 }
