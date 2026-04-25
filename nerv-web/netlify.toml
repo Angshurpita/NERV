@@ -1,5 +1,4 @@
 [build]
-  base = "nerv-web"
   command = "npm run build"
   publish = ".next"
 
@@ -8,4 +7,3 @@
 
 [build.environment]
   NODE_VERSION = "20"
-
