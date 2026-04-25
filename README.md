@@ -61,6 +61,17 @@ python execution/static_analysis.py /tmp/nerv_scan_*/repo_name
 python execution/generate_report.py scan_results.json
 ```
 
+## Deployment Architecture
+
+The NERV-VIPER framework is designed for multi-platform high availability:
+
+- **Frontend**: [Vercel](https://vercel.com) (Next.js)
+  - Hosted at: `nerv777.vercel.app` (or custom domain)
+  - Manages identity (Supabase), routing, and UI.
+- **Backend**: [Render](https://render.com) (FastAPI + Execution Layer)
+  - Hosted at: `nerv-viper-backend.onrender.com`
+  - Handles heavy lifting: cloning, static analysis, and security audits.
+
 ## Layer Details
 
 ### Layer 1: Directives
