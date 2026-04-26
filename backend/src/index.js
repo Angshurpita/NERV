@@ -28,7 +28,7 @@ app.get('/health', (req, res) => {
 // Protected Routes
 app.post('/api/scan', authMiddleware, async (req, res) => {
   const { targetUrl } = req.body;
-  
+
   if (!targetUrl) {
     return res.status(400).json({ error: 'targetUrl is required' });
   }

@@ -65,9 +65,6 @@ export default function Navbar() {
       provider: "google",
       options: {
         redirectTo: `${getURL()}/auth/callback`,
-        queryParams: {
-          access_type: "offline",
-        },
       },
     });
 
