@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
 import { generateAuthToken, PlanType } from "@/utils/token";
+import { authenticatedFetch } from "@/utils/api";
 
 interface Profile {
   id: string;
@@ -25,6 +26,9 @@ export function DashboardClient({
   const [message, setMessage] = useState("");
   const [subscriptions, setSubscriptions] = useState<any[]>(dbSubscriptions);
   const [mounted, setMounted] = useState(false);
+  const [scanTarget, setScanTarget] = useState("");
+  const [scanResult, setScanResult] = useState<any>(null);
+  const [scanning, setScanning] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -111,6 +115,23 @@ export function DashboardClient({
       setMessage("Operator designation updated successfully.");
     }
     setLoading(false);
+  };
+
+  const handleRunScan = async () => {
+    if (!scanTarget) return;
+    setScanning(true);
+    setScanResult(null);
+    try {
+      const result = await authenticatedFetch('/api/scan', {
+        method: 'POST',
+        body: JSON.stringify({ targetUrl: scanTarget })
+      });
+      setScanResult(result);
+    } catch (err: any) {
+      setMessage(`Scan failed: ${err.message}`);
+    } finally {
+      setScanning(false);
+    }
   };
 
 
@@ -297,6 +318,68 @@ export function DashboardClient({
               </div>
             );
           })}
+        </div>
+      </div>
+      {/* Security Operations Terminal */}
+      <div className="bg-gray-900 border border-white/5 p-10 rounded-3xl relative overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/[0.05] blur-[120px] pointer-events-none"></div>
+        
+        <div className="relative z-10">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></div>
+            <h2 className="text-[11px] font-black tracking-[0.4em] uppercase text-blue-500/80">
+              Security Operations Terminal
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <div className="space-y-6">
+              <p className="text-gray-400 text-xs leading-relaxed max-w-md italic">
+                Enter a target URL to initiate a security orchestration scan. All operations are logged and verified via the NERV-VIPER framework.
+              </p>
+              
+              <div className="flex flex-col gap-4">
+                <input
+                  type="text"
+                  placeholder="https://target-system.com"
+                  value={scanTarget}
+                  onChange={(e) => setScanTarget(e.target.value)}
+                  className="w-full bg-black/40 border border-white/10 rounded-2xl px-6 py-4 text-sm text-blue-400 placeholder:text-gray-600 focus:outline-none focus:border-blue-500/50 transition-all font-mono"
+                />
+                <button
+                  onClick={handleRunScan}
+                  disabled={scanning || !scanTarget}
+                  className="w-full py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white rounded-2xl text-[10px] font-black tracking-[0.3em] uppercase transition-all shadow-lg shadow-blue-600/20"
+                >
+                  {scanning ? "ORCHESTRATING..." : "INITIATE SECURITY SCAN"}
+                </button>
+              </div>
+            </div>
+
+            <div className="bg-black/40 border border-white/5 rounded-2xl p-6 min-h-[200px] font-mono text-[11px] relative">
+              <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-4">
+                <span className="text-gray-500 uppercase tracking-widest">Operation Log</span>
+                <span className="text-blue-500/40 animate-pulse">● LIVE</span>
+              </div>
+              
+              <div className="space-y-2 overflow-y-auto max-h-[150px] custom-scrollbar">
+                {!scanResult && !scanning && (
+                  <p className="text-gray-700 italic">Waiting for operator input...</p>
+                )}
+                {scanning && (
+                  <p className="text-blue-400/80 animate-pulse">Initializing multi-agent scan sequence...</p>
+                )}
+                {scanResult && (
+                  <div className="space-y-2">
+                    <p className="text-green-500/80">&gt; SCAN_INITIATED: {scanResult.scanId}</p>
+                    <p className="text-gray-400">&gt; TARGET: {scanResult.target}</p>
+                    <p className="text-gray-400">&gt; OPERATOR: {scanResult.operator}</p>
+                    <p className="text-blue-400">&gt; STATUS: {scanResult.status.toUpperCase()}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

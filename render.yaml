@@ -1,13 +1,17 @@
 services:
   - type: web
-    name: nerv-viper-backend
-    env: python
-    buildCommand: "pip install -r backend/requirements.txt"
-    startCommand: "python backend/main.py"
+    name: nerv-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    rootDir: backend
     envVars:
-      - key: PORT
-        value: 8000
-      - key: PYTHON_VERSION
-        value: 3.10.12
-    # Ensure git is available for cloning repos
-    # Render's native python environment includes git by default.
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
