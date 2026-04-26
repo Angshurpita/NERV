@@ -1,0 +1,2 @@
+node_modules/next/dist/client/components/segment-cache/cache.d.ts(104,21): error TS2304: Cannot find name 'PromiseWithResolvers'.
+src/app/auth/login/page.tsx(3,30): error TS2307: Cannot find module '@/utils/supabase/client' or its corresponding type declarations.
