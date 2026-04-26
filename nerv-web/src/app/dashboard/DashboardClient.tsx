@@ -73,15 +73,23 @@ export function DashboardClient({
         localStorage.setItem(`sub_${user.id}`, JSON.stringify([freeSub]));
       }
 
-      setSubscriptions(currentSubs);
+      // Mark expired subscriptions (Except FREE tier)
+      const now = new Date();
+      const updatedSubs = currentSubs.map(s => {
+        const isFree = s.plan?.toLowerCase() === "free";
+        const isExpired = !isFree && s.expires_at && new Date(s.expires_at) < now;
+        return { ...s, isExpired };
+      });
+
+      setSubscriptions(updatedSubs);
     };
 
     syncSubscriptions();
   }, [user.id, dbSubscriptions, supabase]);
 
-  const activePaidSubs = subscriptions.filter(s => s.plan?.toLowerCase() !== "free");
+  const activePaidSubs = subscriptions.filter(s => s.plan?.toLowerCase() !== "free" && !s.isExpired);
   const hasPaidPlan = activePaidSubs.length > 0;
-  const displaySubs = hasPaidPlan ? activePaidSubs : subscriptions;
+  const displaySubs = hasPaidPlan ? activePaidSubs : subscriptions.filter(s => !s.isExpired);
 
   const handleUpdateProfile = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -196,10 +204,12 @@ export function DashboardClient({
             { id: "elite", name: "Elite Tier", limit: "20 AI Scans / Day", color: "border-blue-600/10" },
             { id: "team black", name: "Team Black", limit: "Unlimited", color: "border-red-500/10", special: true },
           ].map((plan) => {
-            const hasPaidPlan = subscriptions.some(s => s.plan?.toLowerCase() !== "free");
+            const activePaidSubs = subscriptions.filter(s => s.plan?.toLowerCase() !== "free" && !s.isExpired);
+            const hasPaidPlan = activePaidSubs.length > 0;
             const sub = subscriptions.find(s => s.plan?.toLowerCase() === plan.id);
+            const isExpired = sub?.isExpired;
             const isActive = mounted && (
-              !!sub || 
+              (!!sub && !isExpired) || 
               (subscriptions.length === 0 && initialProfile?.plan?.toLowerCase() === plan.id) ||
               (subscriptions.length === 0 && !initialProfile?.plan && plan.id === "free")
             ) && !(plan.id === "free" && hasPaidPlan);
@@ -210,12 +220,20 @@ export function DashboardClient({
                 className={`relative p-8 border rounded-3xl transition-all duration-500 group overflow-hidden ${
                   isActive 
                     ? `bg-blue-50 border-blue-200 shadow-premium` 
+                    : isExpired 
+                    ? `bg-red-50/30 border-red-100 opacity-80`
                     : 'bg-white border-black/5 opacity-60 hover:opacity-100 hover:border-gray-200 hover:shadow-premium'
                 }`}
               >
                 {isActive && (
                   <div className="absolute top-0 right-0 px-3 py-1.5 bg-blue-500 text-white text-[9px] font-black tracking-[0.3em] uppercase rounded-bl-xl shadow-lg shadow-blue-500/20">
                     ACTIVE
+                  </div>
+                )}
+
+                {isExpired && (
+                  <div className="absolute top-0 right-0 px-3 py-1.5 bg-red-500 text-white text-[9px] font-black tracking-[0.3em] uppercase rounded-bl-xl shadow-lg shadow-red-500/20">
+                    EXPIRED
                   </div>
                 )}
                 
@@ -233,33 +251,44 @@ export function DashboardClient({
                   className={`w-full py-3.5 rounded-xl text-[10px] font-bold tracking-[0.3em] uppercase transition-all duration-500 ${
                     isActive
                       ? 'bg-blue-600/10 text-blue-600/60 cursor-default border border-blue-600/20 shadow-inner'
+                      : isExpired
+                      ? 'bg-red-600 text-white hover:bg-red-700 shadow-lg shadow-red-600/10'
                       : 'bg-gray-900 text-white hover:bg-black hover:shadow-premium'
                   }`}
                 >
-                  {isActive ? "DEPLOYED" : "INITIATE"}
+                  {isActive ? "DEPLOYED" : isExpired ? "RENEW NODE" : "INITIATE"}
                 </button>
 
-                {isActive && (
+                {(isActive || isExpired) && (
                   <div className="mt-6 pt-6 border-t border-blue-600/10 space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-1.5 h-1.5 bg-blue-600 rounded-full animate-pulse shadow-lg shadow-blue-600/30"></div>
-                      <span className="text-[9px] text-blue-600/60 tracking-[0.2em] font-bold uppercase italic">Sync Active</span>
+                      <div className={`w-1.5 h-1.5 rounded-full shadow-lg ${isActive ? 'bg-blue-600 animate-pulse shadow-blue-600/30' : 'bg-red-500 shadow-red-500/30'}`}></div>
+                      <span className={`text-[9px] tracking-[0.2em] font-bold uppercase italic ${isActive ? 'text-blue-600/60' : 'text-red-500/60'}`}>
+                        {isActive ? "Sync Active" : "Access Revoked"}
+                      </span>
                     </div>
                     {sub?.token && (
                       <div className="flex flex-col gap-2">
                         <span className="text-[8px] text-gray-400 tracking-[0.3em] uppercase font-bold">Node Token</span>
-                        <div className="flex items-center justify-between gap-3 bg-white p-3 rounded-xl border border-blue-100">
-                          <code className="text-[10px] text-blue-600 font-mono truncate">{sub.token}</code>
-                          <button 
-                             onClick={() => {
-                               navigator.clipboard.writeText(sub.token);
-                               setMessage(`${plan.name} token copied.`);
-                               setTimeout(() => setMessage(""), 2000);
-                             }}
-                             className="text-gray-300 hover:text-blue-600 transition-all duration-300"
-                          >
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                          </button>
+                        <div className={`flex items-center justify-between gap-3 p-3 rounded-xl border ${isActive ? 'bg-white border-blue-100' : 'bg-gray-50 border-red-100'}`}>
+                          <code className={`text-[10px] font-mono truncate ${isActive ? 'text-blue-600' : 'text-red-400 line-through'}`}>
+                            {isExpired ? "TOKEN EXPIRED" : sub.token}
+                          </code>
+                          {!isExpired && (
+                            <button 
+                               onClick={() => {
+                                 navigator.clipboard.writeText(sub.token);
+                                 setMessage(`${plan.name} token copied.`);
+                                 setTimeout(() => setMessage(""), 2000);
+                               }}
+                               className="text-gray-300 hover:text-blue-600 transition-all duration-300"
+                            >
+                              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                            </button>
+                          )}
+                          {isExpired && (
+                            <span className="text-[8px] text-red-500 font-bold uppercase tracking-tighter">Deactivated</span>
+                          )}
                         </div>
                       </div>
                     )}

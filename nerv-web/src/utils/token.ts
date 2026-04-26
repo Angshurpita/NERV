@@ -7,11 +7,11 @@ export const PLAN_CODES: Record<PlanType, string> = {
   STARTER: "ST",
   PRO: "PR",
   ELITE: "EL",
-  TEAM_BLACK: "TB",
+  TEAM_BLACK: "XX",
 };
 
 export function generateAuthToken(userId: string, plan: PlanType): string {
-  const planCode = PLAN_CODES[plan] || "XX";
+  const planCode = PLAN_CODES[plan] || "??";
   const userPart = userId.slice(-6).toUpperCase();
   const timestamp = Date.now().toString(36).toUpperCase();
   const random = Math.random().toString(36).substring(2, 5).toUpperCase();
