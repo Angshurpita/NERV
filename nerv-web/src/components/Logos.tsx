@@ -21,37 +21,81 @@ export default function Logos() {
   return (
     <section 
       ref={sectionRef}
-      className="py-20 border-y border-white/5 bg-black/20 overflow-hidden"
+      className="py-24 border-y border-gray-100 bg-white overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-6">
-        <div className={`flex flex-col items-center gap-12 transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-[10px] tracking-[0.5em] text-white/20 uppercase font-bold">
-              Core Intelligence Engine
+        <div className={`flex flex-col items-center gap-16 transition-all duration-[1200ms] cubic-bezier(0.2, 0.8, 0.2, 1) ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+          <div className="flex flex-col items-center gap-4">
+            <span className="text-[11px] tracking-[0.5em] text-gray-500 uppercase font-black">
+              Integrated Intelligence Systems
             </span>
-            <div className="h-px w-12 bg-white/10"></div>
+            <div className="h-[2px] w-12 bg-blue-600 rounded-full"></div>
           </div>
 
-          <div className="flex flex-wrap justify-center items-center gap-16 md:gap-32 opacity-40 hover:opacity-100 transition-all duration-700">
-            {/* The provided logo repeated or alongside text brands for a "Logos Section" look */}
-            <div className="flex items-center gap-4">
-              <div className="relative w-12 h-12">
+          <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20">
+            {/* NERV-VIPER */}
+            <div className="group flex items-center gap-4 transition-all duration-500">
+              <div className="relative w-8 h-8 transition-transform duration-500 group-hover:scale-110">
                 <Image
                   src="/nerv-logo.png"
-                  alt="NERV Core"
+                  alt="NERV"
                   fill
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-bold tracking-[0.2em] text-white">NERV-VIPER</span>
-            </div>
-            
-            <div className="text-2xl font-black tracking-tighter text-white/40 font-mono">
-              AGENTIC<span className="text-emerald-400/20">.AI</span>
+              <span className="text-[14px] font-bold tracking-[0.3em] text-gray-900">NERV</span>
             </div>
 
-            <div className="text-xl font-light tracking-[0.4em] text-white/30 italic">
-              VIPER<span className="font-bold text-white/10">.PROTOCOL</span>
+            {/* Gemma */}
+            <div className="group flex items-center gap-3 transition-all duration-500">
+              <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/159254807?s=200&v=4"
+                  alt="Gemma"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-[14px] font-bold tracking-tight text-gray-800">Gemma</span>
+            </div>
+
+            {/* Qwen */}
+            <div className="group flex items-center gap-3 transition-all duration-500">
+              <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/141221163?s=200&v=4"
+                  alt="Qwen"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-[14px] font-bold tracking-tight text-gray-800">Qwen</span>
+            </div>
+
+            {/* Kimi */}
+            <div className="group flex items-center gap-3 transition-all duration-500">
+              <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/136453915?s=200&v=4"
+                  alt="Kimi"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-[14px] font-bold tracking-tight text-gray-800">Kimi</span>
+            </div>
+
+            {/* GLM */}
+            <div className="group flex items-center gap-3 transition-all duration-500">
+              <div className="relative w-8 h-8 overflow-hidden rounded-lg border border-gray-100 shadow-sm transition-all duration-500 group-hover:shadow-md">
+                <Image
+                  src="https://avatars.githubusercontent.com/u/120247656?s=200&v=4"
+                  alt="GLM"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+              <span className="text-[14px] font-bold tracking-tight text-gray-800">GLM</span>
             </div>
           </div>
         </div>

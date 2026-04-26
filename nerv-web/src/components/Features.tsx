@@ -75,49 +75,47 @@ export default function Features() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="features" className="relative py-32 md:py-40 px-6 overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-      <div className="absolute inset-0 bg-grid opacity-30"></div>
+    <section ref={sectionRef} id="features" className="relative py-32 md:py-48 px-6 overflow-hidden bg-white">
+      <div className="absolute inset-0 bg-mesh opacity-30"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section header */}
         <div
-          className={`mb-20 text-center transition-all duration-1000 ${
+          className={`mb-24 text-center transition-all duration-1000 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-8 h-px bg-emerald-400"></div>
-            <span className="text-[10px] tracking-[0.4em] text-emerald-400 uppercase font-medium">
+            <span className="text-[10px] tracking-[0.4em] text-blue-600 uppercase font-bold">
               Capabilities
             </span>
-            <div className="w-8 h-px bg-emerald-400"></div>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-5 text-gradient">
-            Built Different
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
+            Security <span className="text-blue-600 italic">Engineered</span>
           </h2>
-          <p className="text-white/40 text-sm md:text-base max-w-lg mx-auto leading-relaxed">
-            Every design decision in NERV-VIPER is a deliberate rejection of bloated security tooling.
+          <p className="text-gray-500 text-sm md:text-base max-w-lg mx-auto leading-relaxed font-medium">
+            Every design decision in NERV-VIPER is a deliberate commitment to precise, 
+            deterministic security orchestration.
           </p>
         </div>
 
         {/* Feature grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, i) => (
             <div
               key={feature.title}
-              className={`group relative p-7 rounded-xl border border-white/6 bg-white/[0.015] hover:border-emerald-400/15 hover:bg-emerald-400/[0.02] transition-all duration-500 ${
+              className={`group relative p-10 rounded-3xl border border-black/5 bg-gray-50 shadow-premium hover:shadow-xl hover:border-blue-600/10 transition-all duration-700 ${
                 visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
               }`}
               style={{ transitionDelay: `${150 + i * 80}ms` }}
             >
-              <div className="text-white/15 group-hover:text-emerald-400/50 transition-colors mb-5">
+              <div className="text-blue-600 mb-8 transition-transform duration-500 group-hover:scale-110">
                 {feature.icon}
               </div>
-              <h3 className="text-base font-bold tracking-wide mb-3 group-hover:text-emerald-400 transition-colors">
+              <h3 className="text-lg font-bold tracking-tight mb-4 text-gray-900">
                 {feature.title}
               </h3>
-              <p className="text-sm text-white/35 leading-relaxed">{feature.description}</p>
+              <p className="text-sm text-gray-500 leading-relaxed font-medium">{feature.description}</p>
             </div>
           ))}
         </div>

@@ -34,13 +34,13 @@ const aiModes = [
     option: "1",
     target: "git",
     desc: "Clones GitHub repo → static codebase security analysis only",
-    color: "emerald",
+    color: "blue",
   },
   {
     option: "2",
     target: "git_link",
     desc: "Clones repo → tests codebase, then stress tests the deployed website",
-    color: "cyan",
+    color: "indigo",
   },
   {
     option: "3",
@@ -65,17 +65,17 @@ const entryPoints = [
 ];
 
 const aiColorMap: Record<string, { border: string; bg: string; text: string; badge: string }> = {
-  emerald: {
-    border: "border-emerald-400/20",
-    bg: "bg-emerald-400/5",
-    text: "text-emerald-400",
-    badge: "bg-emerald-400",
+  blue: {
+    border: "border-blue-400/20",
+    bg: "bg-blue-400/5",
+    text: "text-blue-400",
+    badge: "bg-blue-400",
   },
-  cyan: {
-    border: "border-cyan-400/20",
-    bg: "bg-cyan-400/5",
-    text: "text-cyan-400",
-    badge: "bg-cyan-400",
+  indigo: {
+    border: "border-indigo-400/20",
+    bg: "bg-indigo-400/5",
+    text: "text-indigo-400",
+    badge: "bg-indigo-400",
   },
   violet: {
     border: "border-violet-400/20",
@@ -90,28 +90,27 @@ const aiColorMap: Record<string, { border: string; bg: string; text: string; bad
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-3 mb-6">
-      <div className="w-6 h-px bg-emerald-400/50"></div>
-      <span className="text-[9px] tracking-[0.35em] text-emerald-400/70 uppercase font-medium">
+      <span className="text-[9px] tracking-[0.4em] text-blue-600 uppercase font-bold">
         {children}
       </span>
     </div>
   );
 }
 
-function CodeBlock({ children, prompt = "❯" }: { children: string; prompt?: string }) {
+function CodeBlock({ children, prompt = "$" }: { children: string; prompt?: string }) {
   return (
-    <div className="relative rounded-xl border border-white/8 bg-[#050505] overflow-hidden group">
-      <div className="flex items-center px-4 py-2.5 border-b border-white/5">
+    <div className="relative rounded-2xl border border-black/5 bg-gray-900 overflow-hidden shadow-premium group">
+      <div className="flex items-center px-6 py-3 border-b border-white/5 bg-white/[0.02]">
         <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
-          <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
+          <div className="w-2 h-2 rounded-full bg-red-500/20 border border-red-500/40"></div>
+          <div className="w-2 h-2 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
+          <div className="w-2 h-2 rounded-full bg-green-500/20 border border-green-500/40"></div>
         </div>
       </div>
-      <div className="p-5 font-mono text-sm flex items-center gap-3">
-        <span className="text-emerald-400/60 select-none">{prompt}</span>
-        <span className="text-white/90">{children}</span>
-        <span className="inline-block w-2 h-5 bg-emerald-400/70 animate-terminal-blink ml-1"></span>
+      <div className="p-6 font-mono text-sm flex items-center gap-4">
+        <span className="text-blue-400 select-none font-bold">{prompt}</span>
+        <span className="text-gray-100">{children}</span>
+        <span className="inline-block w-1.5 h-4 bg-blue-500 animate-terminal-blink ml-1"></span>
       </div>
     </div>
   );
@@ -148,74 +147,72 @@ export default function Docs() {
     <section
       ref={sectionRef}
       id="docs"
-      className="relative py-32 md:py-40 px-6 overflow-hidden"
+      className="relative py-32 md:py-48 px-6 overflow-hidden bg-white"
     >
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
-      <div className="absolute inset-0 bg-grid opacity-20"></div>
+      <div className="absolute inset-0 bg-mesh opacity-30"></div>
 
       <div className="max-w-5xl mx-auto relative z-10">
         {/* ── Header ── */}
         <div
-          className={`mb-20 transition-all duration-1000 ${
+          className={`mb-24 transition-all duration-1000 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-emerald-400"></div>
-            <span className="text-[10px] tracking-[0.4em] text-emerald-400 uppercase font-medium">
+            <span className="text-[10px] tracking-[0.4em] text-blue-600 uppercase font-bold">
               Documentation
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-5 text-gradient">
-            CLI Reference
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
+            CLI <span className="text-blue-600">Reference</span>
           </h2>
-          <p className="text-white/40 text-sm md:text-base max-w-xl leading-relaxed">
-            Every command, flag, and mode available in NERV-VIPER.
-            One install. Zero configuration. Instant security analysis.
+          <p className="text-gray-500 text-sm md:text-base max-w-xl leading-relaxed font-medium">
+            Comprehensive guide to commands, flags, and operational modes.
+            Designed for clarity and precision.
           </p>
         </div>
 
         {/* ── Installation ── */}
         <div
-          className={`mb-16 transition-all duration-1000 delay-100 ${
+          className={`mb-20 transition-all duration-1000 delay-100 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <SectionLabel>Installation</SectionLabel>
           <CodeBlock>npm i nerv-viper</CodeBlock>
-          <p className="text-xs text-white/25 mt-3 ml-1 tracking-wide">
-            Installs the CLI globally and auto-configures Playwright for browser-based recon.
+          <p className="text-[11px] text-gray-400 mt-4 ml-1 tracking-tight font-bold">
+            Global deployment installs core orchestration logic and auto-configures browser-based reconnaissance.
           </p>
         </div>
 
         {/* ── Entry Points ── */}
         <div
-          className={`mb-16 transition-all duration-1000 delay-200 ${
+          className={`mb-20 transition-all duration-1000 delay-200 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <SectionLabel>Entry Points</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {entryPoints.map((ep) => (
               <div
                 key={ep.binary}
-                className="p-5 rounded-xl border border-white/8 bg-[#050505] flex items-start gap-4 hover:border-emerald-400/15 transition-colors"
+                className="p-6 rounded-3xl border border-black/5 bg-gray-50 flex items-start gap-5 hover:border-blue-600/20 hover:bg-white transition-all duration-500 shadow-premium group"
               >
-                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-emerald-400/5 border border-emerald-400/15 flex items-center justify-center">
-                  <span className="text-emerald-400 font-mono text-xs font-bold">
+                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                  <span className="font-mono text-lg font-bold">
                     {ep.binary === "nerv" ? "N" : "R"}
                   </span>
                 </div>
                 <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <code className="text-sm text-white font-mono font-semibold">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <code className="text-sm text-gray-900 font-mono font-bold">
                       {ep.binary}
                     </code>
-                    <span className="text-[9px] text-white/20 font-mono tracking-wider">
+                    <span className="text-[9px] text-gray-400 font-mono tracking-widest uppercase font-bold">
                       {ep.path}
                     </span>
                   </div>
-                  <p className="text-xs text-white/35">{ep.purpose}</p>
+                  <p className="text-xs text-gray-500 font-medium">{ep.purpose}</p>
                 </div>
               </div>
             ))}
@@ -228,18 +225,18 @@ export default function Docs() {
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <SectionLabel>Reference</SectionLabel>
+          <SectionLabel>Reference Library</SectionLabel>
 
           {/* Tab bar */}
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-white/[0.03] border border-white/8 mb-8 w-max">
+          <div className="flex items-center gap-1 p-1.5 rounded-2xl bg-gray-100 border border-black/5 mb-10 w-max">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-2.5 rounded-lg text-[11px] tracking-[0.15em] uppercase font-medium transition-all duration-300 ${
+                className={`px-8 py-2.5 rounded-xl text-[10px] tracking-[0.2em] uppercase font-bold transition-all duration-500 ${
                   activeTab === tab.id
-                    ? "bg-white text-black"
-                    : "text-white/35 hover:text-white/60 hover:bg-white/5"
+                    ? "bg-white text-blue-600 shadow-premium"
+                    : "text-gray-400 hover:text-gray-600"
                 }`}
               >
                 {tab.label}
@@ -248,19 +245,19 @@ export default function Docs() {
           </div>
 
           {/* Tab content */}
-          <div className="rounded-xl border border-white/8 bg-[#050505] overflow-hidden">
+          <div className="rounded-3xl border border-black/5 bg-white overflow-hidden shadow-premium">
             {/* ─ Commands Tab ─ */}
             {activeTab === "commands" && (
-              <div className="divide-y divide-white/5">
+              <div className="divide-y divide-gray-100">
                 {/* Header */}
-                <div className="grid grid-cols-[1fr_2fr] md:grid-cols-[1fr_auto_2fr] gap-4 px-6 py-3.5 bg-white/[0.02]">
-                  <span className="text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
+                <div className="grid grid-cols-[1.5fr_2fr] md:grid-cols-[1.2fr_1fr_2fr] gap-6 px-8 py-4 bg-gray-50/50">
+                  <span className="text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
                     Command
                   </span>
-                  <span className="hidden md:block text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
+                  <span className="hidden md:block text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
                     Alias
                   </span>
-                  <span className="text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
+                  <span className="text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
                     Description
                   </span>
                 </div>
@@ -268,15 +265,15 @@ export default function Docs() {
                 {coreCommands.map((c, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[1fr_2fr] md:grid-cols-[1fr_auto_2fr] gap-4 px-6 py-4 hover:bg-white/[0.015] transition-colors group"
+                    className="grid grid-cols-[1.5fr_2fr] md:grid-cols-[1.2fr_1fr_2fr] gap-6 px-8 py-5 hover:bg-gray-50 transition-colors group"
                   >
-                    <code className="text-sm text-emerald-400/80 font-mono group-hover:text-emerald-400 transition-colors">
+                    <code className="text-sm text-blue-600 font-mono font-bold">
                       {c.cmd}
                     </code>
-                    <span className="hidden md:block text-xs text-white/20 font-mono min-w-[120px]">
+                    <span className="hidden md:block text-xs text-gray-300 font-mono font-bold">
                       {c.alias || "—"}
                     </span>
-                    <span className="text-sm text-white/40 leading-relaxed">
+                    <span className="text-sm text-gray-600 leading-relaxed font-medium">
                       {c.desc}
                     </span>
                   </div>
@@ -286,24 +283,24 @@ export default function Docs() {
 
             {/* ─ Flags Tab ─ */}
             {activeTab === "flags" && (
-              <div className="divide-y divide-white/5">
-                <div className="grid grid-cols-[1fr_2fr] gap-4 px-6 py-3.5 bg-white/[0.02]">
-                  <span className="text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
+              <div className="divide-y divide-gray-100">
+                <div className="grid grid-cols-[1fr_2fr] gap-6 px-8 py-4 bg-gray-50/50">
+                  <span className="text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
                     Flag
                   </span>
-                  <span className="text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
+                  <span className="text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
                     Description
                   </span>
                 </div>
                 {flags.map((f, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[1fr_2fr] gap-4 px-6 py-4 hover:bg-white/[0.015] transition-colors group"
+                    className="grid grid-cols-[1fr_2fr] gap-6 px-8 py-5 hover:bg-gray-50 transition-colors group"
                   >
-                    <code className="text-sm text-emerald-400/80 font-mono group-hover:text-emerald-400 transition-colors whitespace-nowrap">
+                    <code className="text-sm text-blue-600 font-mono font-bold whitespace-nowrap">
                       {f.flag}
                     </code>
-                    <span className="text-sm text-white/40 leading-relaxed">
+                    <span className="text-sm text-gray-600 leading-relaxed font-medium">
                       {f.desc}
                     </span>
                   </div>
@@ -313,61 +310,64 @@ export default function Docs() {
 
             {/* ─ AI Modes Tab ─ */}
             {activeTab === "ai-modes" && (
-              <div className="p-6 space-y-5">
-                <p className="text-xs text-white/30 mb-4 leading-relaxed">
-                  When <code className="text-emerald-400/70 bg-emerald-400/5 px-1.5 py-0.5 rounded">--ai</code> is
-                  enabled in interactive mode, three target options are presented:
+              <div className="p-8 space-y-6">
+                <p className="text-xs text-gray-400 mb-6 leading-relaxed font-bold uppercase tracking-tight">
+                  Active deployment of <code className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-100">--ai</code> 
+                  initiates multi-agent collaboration:
                 </p>
-                {aiModes.map((mode) => {
-                  const c = aiColorMap[mode.color];
-                  return (
-                    <div
-                      key={mode.option}
-                      className={`p-5 rounded-xl border ${c.border} ${c.bg} flex items-start gap-4 hover:border-opacity-50 transition-colors`}
-                    >
+                <div className="grid grid-cols-1 gap-4">
+                  {aiModes.map((mode) => {
+                    const c = aiColorMap[mode.color];
+                    return (
                       <div
-                        className={`flex-shrink-0 w-8 h-8 rounded-lg ${c.bg} border ${c.border} flex items-center justify-center`}
+                        key={mode.option}
+                        className={`p-6 rounded-3xl border ${c.border.replace('border-', 'border-')} ${c.bg.replace('bg-', 'bg-')} flex items-start gap-5 hover:shadow-lg transition-all duration-500`}
+                        style={{ backgroundColor: mode.color === 'blue' ? '#eff6ff' : mode.color === 'indigo' ? '#eef2ff' : '#f5f3ff' }}
                       >
-                        <span className={`${c.text} font-mono text-sm font-bold`}>
-                          {mode.option}
-                        </span>
-                      </div>
-                      <div>
-                        <div className="flex items-center gap-3 mb-1.5">
-                          <code className={`text-sm ${c.text} font-mono font-semibold`}>
-                            {mode.target}
-                          </code>
+                        <div
+                          className={`flex-shrink-0 w-10 h-10 rounded-xl bg-white border border-black/5 flex items-center justify-center shadow-sm`}
+                        >
+                          <span className={`text-${mode.color}-600 font-mono text-sm font-bold`}>
+                            {mode.option}
+                          </span>
                         </div>
-                        <p className="text-xs text-white/40 leading-relaxed">
-                          {mode.desc}
-                        </p>
+                        <div>
+                          <div className="flex items-center gap-3 mb-1.5">
+                            <code className={`text-sm text-${mode.color}-600 font-mono font-bold`}>
+                              {mode.target}
+                            </code>
+                          </div>
+                          <p className="text-xs text-gray-600 leading-relaxed font-medium">
+                            {mode.desc}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             )}
 
             {/* ─ Scripts Tab ─ */}
             {activeTab === "scripts" && (
-              <div className="divide-y divide-white/5">
-                <div className="grid grid-cols-[1fr_2fr] gap-4 px-6 py-3.5 bg-white/[0.02]">
-                  <span className="text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
+              <div className="divide-y divide-gray-100">
+                <div className="grid grid-cols-[1fr_2fr] gap-6 px-8 py-4 bg-gray-50/50">
+                  <span className="text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
                     Script
                   </span>
-                  <span className="text-[9px] tracking-[0.3em] text-white/25 uppercase font-medium">
-                    Runs
+                  <span className="text-[9px] tracking-[0.4em] text-gray-400 uppercase font-bold">
+                    Execution
                   </span>
                 </div>
                 {npmScripts.map((s, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[1fr_2fr] gap-4 px-6 py-4 hover:bg-white/[0.015] transition-colors group"
+                    className="grid grid-cols-[1fr_2fr] gap-6 px-8 py-5 hover:bg-gray-50 transition-colors group"
                   >
-                    <code className="text-sm text-emerald-400/80 font-mono group-hover:text-emerald-400 transition-colors">
+                    <code className="text-sm text-blue-600 font-mono font-bold">
                       {s.script}
                     </code>
-                    <code className="text-sm text-white/35 font-mono">
+                    <code className="text-sm text-gray-400 font-mono font-bold">
                       {s.command}
                     </code>
                   </div>
@@ -379,92 +379,67 @@ export default function Docs() {
 
         {/* ── Quick Usage Examples ── */}
         <div
-          className={`mt-16 transition-all duration-1000 delay-500 ${
+          className={`mt-24 transition-all duration-1000 delay-500 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <SectionLabel>Quick Start</SectionLabel>
-          <div className="rounded-xl border border-white/8 bg-[#050505] overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
+          <SectionLabel>Quick Deployment</SectionLabel>
+          <div className="rounded-3xl border border-black/5 bg-gray-900 overflow-hidden shadow-premium">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/5 bg-white/[0.02]">
               <div className="flex gap-1.5">
-                <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
-                <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
+                <div className="w-2 h-2 rounded-full bg-red-500/20 border border-red-500/40"></div>
+                <div className="w-2 h-2 rounded-full bg-yellow-500/20 border border-yellow-500/40"></div>
+                <div className="w-2 h-2 rounded-full bg-green-500/20 border border-green-500/40"></div>
               </div>
-              <span className="text-[9px] tracking-[0.3em] text-white/20 font-mono uppercase">
-                Quick Start
+              <span className="text-[9px] tracking-[0.4em] text-white/10 font-mono uppercase font-bold">
+                Terminal Overview
               </span>
               <div></div>
             </div>
-            <div className="p-6 font-mono text-sm space-y-6">
+            <div className="p-10 font-mono text-sm space-y-8">
               {/* Step 1 */}
               <div>
-                <p className="text-[10px] text-white/20 tracking-[0.2em] uppercase mb-2">
-                  # Install NERV-VIPER
+                <p className="text-[9px] text-white/20 tracking-[0.3em] uppercase mb-4 font-bold">
+                  // Core Installation
                 </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400/60 select-none">❯</span>
-                  <span className="text-white/90">npm i nerv-viper</span>
+                <div className="flex items-center gap-4">
+                  <span className="text-blue-400 select-none font-bold">$</span>
+                  <span className="text-gray-100">npm i nerv-viper</span>
                 </div>
               </div>
 
               {/* Step 2 */}
               <div>
-                <p className="text-[10px] text-white/20 tracking-[0.2em] uppercase mb-2">
-                  # Run a basic stress test
+                <p className="text-[9px] text-white/20 tracking-[0.3em] uppercase mb-4 font-bold">
+                  // Standard Stress Test
                 </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400/60 select-none">❯</span>
-                  <span className="text-white/90">
-                    nerv https://target-site.com
+                <div className="flex items-center gap-4">
+                  <span className="text-blue-400 select-none font-bold">$</span>
+                  <span className="text-gray-100">
+                    nerv https://nerv.so
                   </span>
                 </div>
               </div>
 
               {/* Step 3 */}
               <div>
-                <p className="text-[10px] text-white/20 tracking-[0.2em] uppercase mb-2">
-                  # AI-powered scan with PDF report
+                <p className="text-[9px] text-white/20 tracking-[0.3em] uppercase mb-4 font-bold">
+                  // AI Orchestration + Export
                 </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400/60 select-none">❯</span>
-                  <span className="text-white/90">
-                    nerv https://target-site.com --ai --pdf
+                <div className="flex items-center gap-4">
+                  <span className="text-blue-400 select-none font-bold">$</span>
+                  <span className="text-gray-100">
+                    nerv https://nerv.so --ai --pdf
                   </span>
-                </div>
-              </div>
-
-              {/* Step 4 */}
-              <div>
-                <p className="text-[10px] text-white/20 tracking-[0.2em] uppercase mb-2">
-                  # Clone and scan a GitHub repo
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400/60 select-none">❯</span>
-                  <span className="text-white/90">
-                    nerv --ai --repo https://github.com/user/repo --repo-only
-                  </span>
-                </div>
-              </div>
-
-              {/* Step 5 */}
-              <div>
-                <p className="text-[10px] text-white/20 tracking-[0.2em] uppercase mb-2">
-                  # Generate a beginner-friendly report from last scan
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-emerald-400/60 select-none">❯</span>
-                  <span className="text-white/90">nerv prev simplepdf</span>
                 </div>
               </div>
 
               {/* Output */}
-              <div className="border-t border-white/5 pt-4 space-y-1 text-xs text-white/20">
-                <p>[NERV-VIPER v3.5.6] Pipeline initiated...</p>
-                <p>[ORCHESTRATION] Routing directives → execution layer</p>
-                <p>[EXECUTION] Scanning 1,247 files across 38 dependencies...</p>
-                <p className="text-emerald-400/60 mt-2">
-                  ✓ Scan complete. Report saved to ./reports/security_report.pdf
+              <div className="border-t border-white/5 pt-8 space-y-2 text-xs text-white/20 font-bold">
+                <p>[NERV] Orchestration pipeline initialized</p>
+                <p>[AI] Routing directives to analyst agents</p>
+                <p className="text-blue-400 mt-4">
+                  ✓ Operation complete. Report generated.
                 </p>
               </div>
             </div>

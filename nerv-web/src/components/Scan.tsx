@@ -69,28 +69,27 @@ export default function Pipeline() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="pipeline" className="relative py-32 md:py-40 px-6 overflow-hidden">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <section ref={sectionRef} id="pipeline" className="relative py-32 md:py-48 px-6 overflow-hidden bg-white">
+      <div className="absolute inset-0 bg-dots opacity-40"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section header */}
         <div
-          className={`mb-20 transition-all duration-1000 ${
+          className={`mb-24 transition-all duration-1000 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-emerald-400"></div>
-            <span className="text-[10px] tracking-[0.4em] text-emerald-400 uppercase font-medium">
+            <span className="text-[10px] tracking-[0.4em] text-blue-600 uppercase font-bold">
               Security Pipeline
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-5 text-gradient">
-            How It Works
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
+            Operational <span className="text-blue-600">Workflow</span>
           </h2>
-          <p className="text-white/40 text-sm md:text-base max-w-xl leading-relaxed">
-            A 4-stage, non-intrusive security analysis pipeline. Point it at any repository
-            and receive a deterministic, root-cause-first assessment.
+          <p className="text-gray-500 text-sm md:text-base max-w-xl leading-relaxed font-medium">
+            A precise, non-intrusive analysis pipeline. Each stage is isolated, 
+            providing a deterministic assessment of your security posture.
           </p>
         </div>
 
@@ -99,33 +98,33 @@ export default function Pipeline() {
           {steps.map((step, i) => (
             <div
               key={step.step}
-              className={`group relative p-8 rounded-xl border border-white/8 bg-[#050505] hover:border-emerald-400/20 hover:bg-emerald-400/[0.02] transition-all duration-500 ${
+              className={`group relative p-10 rounded-3xl border border-black/5 bg-white shadow-premium hover:border-blue-600/10 transition-all duration-700 ${
                 visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
               }`}
               style={{ transitionDelay: `${200 + i * 120}ms` }}
             >
               {/* Step header */}
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <span className="text-emerald-400/40 font-mono text-xs tracking-wider">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center gap-5">
+                  <span className="text-blue-600/30 font-mono text-[10px] tracking-[0.2em] font-bold">
                     {step.step}
                   </span>
-                  <h3 className="text-lg font-bold tracking-wide group-hover:text-emerald-400 transition-colors">
+                  <h3 className="text-xl font-bold tracking-tight text-gray-900 group-hover:text-blue-600 transition-colors">
                     {step.title}
                   </h3>
                 </div>
-                <div className="text-white/15 group-hover:text-emerald-400/40 transition-colors">
+                <div className="text-gray-300 group-hover:text-blue-600 group-hover:scale-110 transition-all duration-500">
                   {step.icon}
                 </div>
               </div>
 
               {/* Description */}
-              <p className="text-sm text-white/40 leading-relaxed mb-6">{step.description}</p>
+              <p className="text-[13px] text-gray-500 leading-relaxed mb-8 font-medium">{step.description}</p>
 
               {/* Command */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-md bg-white/[0.03] border border-white/5">
-                <span className="text-emerald-400/50 text-[10px] select-none">$</span>
-                <code className="text-[11px] text-white/30 font-mono tracking-wide">
+              <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gray-50 border border-black/5 group-hover:border-blue-600/5 transition-all">
+                <span className="text-blue-600/40 text-[11px] select-none">$</span>
+                <code className="text-[11px] text-gray-400 font-mono tracking-wide group-hover:text-gray-500 transition-colors">
                   {step.command}
                 </code>
               </div>
@@ -135,30 +134,30 @@ export default function Pipeline() {
 
         {/* Terminal output preview */}
         <div
-          className={`mt-12 rounded-xl border border-white/8 bg-[#050505] overflow-hidden transition-all duration-1000 delay-700 ${
+          className={`mt-16 rounded-3xl border border-black/5 bg-[#0a0f18] overflow-hidden shadow-premium transition-all duration-1000 delay-700 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
-          <div className="flex items-center justify-between px-5 py-3 border-b border-white/5">
-            <div className="flex gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-white/8"></div>
+          <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.03] bg-white/[0.02]">
+            <div className="flex gap-1.5">
+              <div className="w-2 h-2 rounded-full bg-gray-700"></div>
+              <div className="w-2 h-2 rounded-full bg-gray-700"></div>
+              <div className="w-2 h-2 rounded-full bg-gray-700"></div>
             </div>
-            <span className="text-[9px] tracking-[0.3em] text-white/20 font-mono uppercase">
-              Pipeline Output
+            <span className="text-[9px] tracking-[0.4em] text-gray-600 font-mono uppercase font-bold">
+              Pipeline Runtime
             </span>
             <div></div>
           </div>
-          <div className="p-6 font-mono text-xs space-y-1.5 text-white/30">
-            <p><span className="text-emerald-400/60">❯</span> nerv-viper initiate --target https://github.com/user/repo</p>
-            <p className="text-white/15 pl-4">[DIRECTIVE] Reading security_scan.md...</p>
-            <p className="text-white/15 pl-4">[ORCHESTRATION] Routing to clone_repository.py</p>
-            <p className="text-white/15 pl-4">[EXECUTION] Cloning to /tmp/nerv_scan_a7f3c/repo...</p>
-            <p className="text-white/15 pl-4">[EXECUTION] Running static_analysis.py — 847 files scanned</p>
-            <p className="text-white/15 pl-4">[EXECUTION] Running dependency_audit.py — 3 CVEs found</p>
-            <p className="text-white/15 pl-4">[EXECUTION] Generating report → security_report.pdf</p>
-            <p className="text-emerald-400/60 mt-3 pl-4">✓ Pipeline terminated deterministically. Risk score: 34/100</p>
+          <div className="p-8 font-mono text-xs space-y-2.5">
+            <p className="text-gray-300"><span className="text-blue-500/60 font-bold">$</span> nerv initiate --target https://nerv.so</p>
+            <p className="text-gray-500 pl-4 font-medium">[DIRECTIVE] Reading security_scan.md...</p>
+            <p className="text-gray-500 pl-4 font-medium">[ORCHESTRATION] Routing to clone_repository.py</p>
+            <p className="text-gray-500 pl-4 font-medium">[EXECUTION] Cloning to isolated workspace...</p>
+            <p className="text-gray-500 pl-4 font-medium">[EXECUTION] Running static_analysis.py — 1,247 files scanned</p>
+            <p className="text-gray-500 pl-4 font-medium">[EXECUTION] Running dependency_audit.py — Cross-referencing CVEs</p>
+            <p className="text-gray-500 pl-4 font-medium">[EXECUTION] Generating report → security_report.pdf</p>
+            <p className="text-blue-500 mt-5 pl-4 font-bold">✓ Pipeline terminated. Operation complete.</p>
           </div>
         </div>
       </div>

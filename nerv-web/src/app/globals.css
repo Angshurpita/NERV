@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #000000;
-  --foreground: #ffffff;
-  --accent: #4ade80;
-  --accent-dim: rgba(74, 222, 128, 0.15);
-  --surface: #050505;
-  --surface-2: #0a0a0a;
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.2);
+  --background: #ffffff;
+  --foreground: #111827; /* Dark Slate / Gray 900 */
+  --accent: #2563eb; /* Vibrant Blue */
+  --accent-dim: rgba(37, 99, 235, 0.05);
+  --surface: #f9fafb; /* Gray 50 */
+  --surface-2: #f3f4f6; /* Gray 100 */
+  --border: rgba(0, 0, 0, 0.05);
+  --border-hover: rgba(0, 0, 0, 0.1);
 }
 
 @theme inline {
@@ -22,40 +22,40 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
   overflow-x: hidden;
 }
 
 /* ─── Scrollbar ─── */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #000;
+  background: #fff;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 /* ─── Text Utilities ─── */
 .text-stroke {
-  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.1);
   color: transparent;
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.5) 100%);
+  background: linear-gradient(to bottom, #111827 40%, #4b5563 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .text-gradient-accent {
-  background: linear-gradient(135deg, #4ade80 0%, #22d3ee 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -65,7 +65,7 @@ body {
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -78,151 +78,74 @@ body {
   to { opacity: 1; }
 }
 
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-32px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 @keyframes terminal-blink {
-  0%, 100% { opacity: 1; }
+  0%, 100% { opacity: 0.8; }
   50% { opacity: 0; }
-}
-
-@keyframes scan-line {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.1); }
-  50% { box-shadow: 0 0 40px rgba(74, 222, 128, 0.25); }
 }
 
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-}
-
-@keyframes typewriter {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-@keyframes grid-pulse {
-  0%, 100% { opacity: 0.03; }
-  50% { opacity: 0.06; }
+  50% { transform: translateY(-12px); }
 }
 
 /* ─── Animation Utilities ─── */
 .animate-fade-up {
-  animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-up 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-fade-in {
-  animation: fade-in 0.6s ease forwards;
-}
-
-.animate-slide-left {
-  animation: slide-in-left 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-in 1s ease forwards;
 }
 
 .animate-terminal-blink {
-  animation: terminal-blink 1s step-end infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: terminal-blink 1.2s step-end infinite;
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float 8s ease-in-out infinite;
 }
-
-.animate-scan {
-  animation: scan-line 4s linear infinite;
-}
-
-.animate-spin-slow {
-  animation: spin 12s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-
-/* ─── Stagger Delays ─── */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
-.delay-800 { animation-delay: 800ms; }
 
 /* ─── Glassmorphism ─── */
 .glass {
-  background: rgba(10, 10, 10, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .glass-accent {
-  background: rgba(74, 222, 128, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(74, 222, 128, 0.1);
+  background: rgba(37, 99, 235, 0.02);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(37, 99, 235, 0.08);
 }
 
-/* ─── Background Grid ─── */
-.bg-grid {
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: grid-pulse 8s ease-in-out infinite;
+/* ─── Background Patterns ─── */
+.bg-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(37, 99, 235, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.03) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(37, 99, 235, 0.03) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(99, 102, 241, 0.03) 0px, transparent 50%);
+  background-size: 100% 100%;
 }
 
-/* ─── Glow Effects ─── */
-.glow-accent {
-  box-shadow: 0 0 60px rgba(74, 222, 128, 0.08), 0 0 120px rgba(74, 222, 128, 0.04);
+.bg-dots {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
-.glow-white {
-  box-shadow: 0 0 80px rgba(255, 255, 255, 0.04), 0 0 160px rgba(255, 255, 255, 0.02);
+/* ─── Shadow Effects ─── */
+.shadow-premium {
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05), 0 20px 25px -5px rgba(0, 0, 0, 0.02);
 }
 
-/* ─── Scanline Overlay (for terminal sections) ─── */
-.scanline::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(255, 255, 255, 0.008) 2px,
-    rgba(255, 255, 255, 0.008) 4px
-  );
-  pointer-events: none;
+.shadow-glow-blue {
+  box-shadow: 0 0 40px rgba(37, 99, 235, 0.08), 0 0 80px rgba(37, 99, 235, 0.04);
 }
 
 /* ─── Section Divider ─── */
 .section-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), transparent);
 }

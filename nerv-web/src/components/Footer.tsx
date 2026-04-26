@@ -2,14 +2,12 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="relative mt-auto">
-      <div className="h-px bg-gradient-to-r from-transparent via-white/8 to-transparent"></div>
-
-      <div className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+    <footer className="relative mt-auto bg-gray-50 border-t border-gray-100">
+      <div className="max-w-6xl mx-auto px-6 py-24">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
           {/* Brand */}
           <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex items-center gap-4 mb-8">
               <div className="relative w-8 h-8">
                 <Image
                   src="/nerv-logo.png"
@@ -18,66 +16,69 @@ export default function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="font-bold tracking-[0.2em] text-sm">NERV-VIPER</span>
+              <span className="font-bold tracking-[0.3em] text-[13px] text-gray-900">NERV-VIPER</span>
             </div>
-            <p className="text-xs text-white/30 leading-relaxed max-w-xs mb-6">
-              Multi-agent security orchestration framework. Root-cause-first
-              vulnerability analysis through a deterministic 3-layer architecture.
+            <p className="text-[14px] text-gray-500 leading-relaxed max-w-sm mb-8 font-light">
+              Advanced multi-agent security orchestration framework. Delivering 
+              deterministic, root-cause-first vulnerability analysis through a 
+              premium 3-layer architecture.
             </p>
-            <p className="text-[9px] tracking-[0.2em] text-white/15 uppercase">
-              v3.5.6 — MIT License
-            </p>
+            <div className="flex items-center gap-6">
+              <p className="text-[10px] tracking-[0.3em] text-gray-400 uppercase font-medium">
+                PRODUCTION READY
+              </p>
+              <div className="h-px w-8 bg-gray-200"></div>
+              <p className="text-[10px] tracking-[0.3em] text-gray-400 uppercase font-medium">
+                MIT LICENSE
+              </p>
+            </div>
           </div>
 
           {/* Links */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] text-white/30 uppercase font-medium mb-5">
-              Navigate
+            <p className="text-[11px] tracking-[0.4em] text-gray-900 uppercase font-bold mb-8">
+              Platform
             </p>
-            <div className="flex flex-col gap-3">
-              <a href="/" className="text-xs text-white/25 hover:text-white/60 transition-colors">Architecture</a>
-              <a href="/pipeline" className="text-xs text-white/25 hover:text-white/60 transition-colors">Pipeline</a>
-              <a href="/features" className="text-xs text-white/25 hover:text-white/60 transition-colors">Features</a>
-              <a href="/access" className="text-xs text-white/25 hover:text-white/60 transition-colors">Access</a>
-              <a href="/docs" className="text-xs text-white/25 hover:text-white/60 transition-colors">Documentation</a>
-              <a href="/contribute" className="text-xs text-white/25 hover:text-white/60 transition-colors">Contribute</a>
+            <div className="flex flex-col gap-4">
+              <a href="#architecture" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Architecture</a>
+              <a href="#pipeline" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Pipeline</a>
+              <a href="#features" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Features</a>
+              <a href="#pricing" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Subscription</a>
+              <a href="#docs" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Documentation</a>
             </div>
           </div>
 
-          {/* Resources */}
+          {/* Connect */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] text-white/30 uppercase font-medium mb-5">
-              Resources
+            <p className="text-[11px] tracking-[0.4em] text-gray-900 uppercase font-bold mb-8">
+              Ecosystem
             </p>
-            <div className="flex flex-col gap-3">
-              <a href="https://github.com/ANG13T/nerv-cli" target="_blank" rel="noopener noreferrer" className="text-xs text-white/25 hover:text-white/60 transition-colors">GitHub</a>
-              <a href="https://www.npmjs.com/package/nerv-cli" target="_blank" rel="noopener noreferrer" className="text-xs text-white/25 hover:text-white/60 transition-colors">npm</a>
-              <a href="#" className="text-xs text-white/25 hover:text-white/60 transition-colors">Documentation</a>
-              <a href="#" className="text-xs text-white/25 hover:text-white/60 transition-colors">Security Policy</a>
+            <div className="flex flex-col gap-4">
+              <a href="https://github.com/ANG13T/nerv-cli" target="_blank" rel="noopener noreferrer" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">GitHub Repository</a>
+              <a href="https://www.npmjs.com/package/nerv-cli" target="_blank" rel="noopener noreferrer" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">NPM Package</a>
+              <a href="#" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Security Protocols</a>
+              <a href="#" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Privacy Manifest</a>
             </div>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="h-px bg-white/5 mb-8"></div>
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8 py-8 border-t border-white/5">
-          <div className="flex flex-col gap-2">
-            <p className="text-[10px] tracking-[0.3em] text-white/20 uppercase font-bold">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-10 py-12 border-t border-gray-200">
+          <div className="flex flex-col gap-3">
+            <p className="text-[11px] tracking-[0.4em] text-gray-900 uppercase font-bold">
               &copy; 2026 NERV-VIPER SECURITY SYSTEMS
             </p>
-            <p className="text-[9px] tracking-[0.1em] text-white/10 uppercase">
-              Part of the Advanced Agentic Coding Initiative
+            <p className="text-[10px] tracking-[0.15em] text-gray-400 uppercase font-normal">
+              Engineered for the Advanced Agentic Coding Initiative
             </p>
           </div>
-          <div className="flex items-center gap-8">
-            <a href="#" className="text-[9px] tracking-[0.2em] text-white/15 hover:text-white/40 uppercase transition-colors">Privacy Protocol</a>
-            <a href="#" className="text-[9px] tracking-[0.2em] text-white/15 hover:text-white/40 uppercase transition-colors">Service Terms</a>
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/5 border border-emerald-400/10">
+          <div className="flex items-center gap-10">
+            <div className="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-blue-50 border border-blue-100">
               <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-40"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-blue-600"></span>
               </span>
-              <span className="text-[9px] tracking-[0.3em] text-emerald-400/60 uppercase font-bold">Systems Operational</span>
+              <span className="text-[10px] tracking-[0.2em] uppercase text-black/40 font-semibold">Security Orchestration Active</span>
             </div>
           </div>
         </div>

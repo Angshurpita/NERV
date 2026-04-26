@@ -10,8 +10,7 @@ export function createClient() {
       auth: {
         getSession: async () => ({ data: { session: null }, error: null }),
         onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
-        signInWithOtp: async () => ({ error: new Error("Missing Supabase configuration") }),
-        verifyOtp: async () => ({ error: new Error("Missing Supabase configuration") }),
+        signInWithOAuth: async () => ({ error: new Error("Missing Supabase configuration") }),
         signOut: async () => {},
       },
       from: () => ({

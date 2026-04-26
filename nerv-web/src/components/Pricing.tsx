@@ -84,7 +84,6 @@ export default function Pricing() {
   const supabase = createClient();
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -122,11 +121,11 @@ export default function Pricing() {
   }, [supabase]);
 
   return (
-    <section ref={sectionRef} id="pricing" className="relative py-32 md:py-40 px-6 overflow-hidden bg-black">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+    <section ref={sectionRef} id="pricing" className="relative py-32 md:py-48 px-6 overflow-hidden bg-gray-50">
+      {/* Subtle Background Elements */}
+      <div className="absolute inset-0 bg-mesh opacity-40"></div>
       
-      {/* Background glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/5 blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-blue-500/5 blur-[150px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <div
@@ -135,18 +134,16 @@ export default function Pricing() {
           }`}
         >
           <div className="flex items-center justify-center gap-3 mb-6">
-            <div className="w-8 h-px bg-emerald-400/50"></div>
-            <span className="text-[10px] tracking-[0.5em] text-emerald-400 uppercase font-bold">
-              Access Tiers
+            <span className="text-[10px] tracking-[0.4em] text-blue-500 uppercase font-semibold">
+              Deployment Scale
             </span>
-            <div className="w-8 h-px bg-emerald-400/50"></div>
           </div>
-          <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-6 text-white uppercase italic">
-            Deployment <span className="text-emerald-400">Scales</span>
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
+            Node <span className="text-blue-600">Access</span>
           </h2>
-          <p className="text-white/40 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-medium">
-            Select your operational capacity. From independent security research to 
-            enterprise-grade multi-agent orchestration.
+          <p className="text-gray-500 text-sm md:text-base max-w-xl mx-auto leading-relaxed font-medium">
+            Select your operative tier and initialize the orchestration pipeline. 
+            Flexible access for individuals and secure scale for enterprises.
           </p>
         </div>
 
@@ -162,43 +159,34 @@ export default function Pricing() {
             return (
               <div
                 key={plan.name}
-                className={`relative flex flex-col p-8 rounded-2xl border transition-all duration-700 hover:scale-[1.02] ${
+                className={`relative flex flex-col p-8 rounded-3xl border transition-all duration-700 bg-white shadow-premium hover:border-blue-600/20 ${
                   isActive
-                    ? "bg-emerald-500/[0.05] border-emerald-500/50 shadow-[0_0_50px_-12px_rgba(52,211,153,0.2)]"
-                    : plan.highlight 
-                    ? "bg-emerald-400/[0.03] border-emerald-400/30 shadow-[0_0_50px_-12px_rgba(52,211,153,0.1)]" 
-                    : plan.special
-                    ? "bg-white/[0.02] border-white/20 shadow-[0_0_50px_-12px_rgba(255,255,255,0.05)]"
-                    : "bg-[#080808] border-white/5"
+                    ? "ring-2 ring-blue-600 ring-offset-4 ring-offset-gray-50 shadow-lg shadow-blue-600/10"
+                    : "border-black/5"
                 } ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
                 style={{ transitionDelay: plan.delay }}
               >
               {(plan.highlight || isActive) && (
-                <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-black text-[8px] tracking-widest font-black uppercase rounded-full ${isActive ? 'bg-white' : 'bg-emerald-400'}`}>
-                  {isActive ? 'Active Tier' : 'Recommended'}
-                </div>
-              )}
-              {plan.special && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-white text-black text-[8px] tracking-widest font-black uppercase rounded-full whitespace-nowrap">
-                  Premium Tier
+                <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 text-white text-[8px] tracking-widest font-bold uppercase rounded-full shadow-lg ${isActive ? 'bg-blue-700' : 'bg-blue-600'}`}>
+                  {isActive ? 'Active Node' : 'Recommended'}
                 </div>
               )}
 
               <div className="mb-8">
-                <h3 className={`text-xs tracking-[0.2em] uppercase font-bold mb-6 ${plan.highlight ? "text-emerald-400" : "text-white/40"}`}>
+                <h3 className={`text-[10px] tracking-[0.2em] uppercase font-bold mb-6 ${plan.highlight ? "text-blue-600" : "text-gray-400"}`}>
                   {plan.name}
                 </h3>
                 <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-black tracking-tighter text-white">{plan.price}</span>
-                  <span className="text-[10px] text-white/20 tracking-widest uppercase font-bold">{plan.period}</span>
+                  <span className="text-4xl font-bold tracking-tight text-gray-900">{plan.price}</span>
+                  <span className="text-[10px] text-gray-400 tracking-widest uppercase font-bold">{plan.period}</span>
                 </div>
               </div>
 
               <div className="flex-1 space-y-4 mb-10">
                 {plan.features.map((feature) => (
                   <div key={feature} className="flex items-start gap-3">
-                    <div className={`mt-1 flex-shrink-0 w-1.5 h-1.5 rounded-full ${plan.highlight ? "bg-emerald-400" : "bg-white/20"}`}></div>
-                    <span className="text-[11px] leading-tight text-white/50 font-medium">{feature}</span>
+                    <div className={`mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full ${plan.highlight ? "bg-blue-600" : "bg-gray-200"}`}></div>
+                    <span className="text-[11px] leading-tight text-gray-600 font-bold">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -209,29 +197,27 @@ export default function Pricing() {
                   const amount = plan.price.replace('$', '');
                   router.push(`/checkout?plan=${plan.id}&amount=${amount}`);
                 }}
-                className={`w-full py-4 rounded-xl text-[10px] tracking-[0.2em] font-black uppercase transition-all duration-300 ${
+                className={`w-full py-4 rounded-xl text-[10px] tracking-[0.2em] font-bold uppercase transition-all duration-500 ${
                   isActive
-                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 cursor-default"
+                    ? "bg-blue-50 text-blue-600 border border-blue-100 cursor-default"
                     : plan.highlight
-                    ? "bg-emerald-400 text-black hover:bg-white"
-                    : plan.special
-                    ? "bg-white text-black hover:bg-emerald-400"
-                    : "bg-white/5 text-white/60 border border-white/10 hover:bg-white hover:text-black hover:border-white"
+                    ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-600/20"
+                    : "bg-gray-50 text-gray-900 border border-black/5 hover:bg-gray-100"
                 }`}
               >
-                {isActive ? "Deployed" : (plan.price === "$0" ? "Current Tier" : "Upgrade")}
+                {isActive ? "ACTIVE" : (plan.price === "$0" ? "CURRENT" : "UPGRADE")}
               </button>
             </div>
               );
           })}
         </div>
 
-        <div className={`mt-20 text-center transition-all duration-1000 delay-700 ${visible ? "opacity-100" : "opacity-0"}`}>
-          <p className="text-[10px] tracking-[0.2em] text-white/20 uppercase font-bold mb-4">
+        <div className={`mt-24 text-center transition-all duration-1000 delay-700 ${visible ? "opacity-100" : "opacity-0"}`}>
+          <p className="text-[10px] tracking-[0.2em] text-gray-400 uppercase font-bold mb-4">
             Custom operational requirements?
           </p>
-          <a href="mailto:angshuganguly111@gmail.com" className="text-xs text-emerald-400/60 hover:text-emerald-400 underline underline-offset-8 transition-colors">
-            Contact Mission Command
+          <a href="mailto:angshuganguly111@gmail.com" className="text-xs text-blue-600 font-bold hover:text-blue-700 transition-colors">
+            Contact Support →
           </a>
         </div>
       </div>

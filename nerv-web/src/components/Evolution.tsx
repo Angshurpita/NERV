@@ -6,10 +6,10 @@ const layers = [
   {
     number: "01",
     name: "Directive",
-    subtitle: "What to do",
-    color: "emerald",
+    subtitle: "Strategic Intent",
+    color: "blue",
     description:
-      "Natural-language SOPs written in Markdown that define objectives, inputs, execution scripts, expected outputs, and edge-case handling strategies.",
+      "Natural-language SOPs written in Markdown that define objectives, inputs, and execution schemas for the orchestration layer.",
     details: [
       "security_scan.md — Multi-layer vulnerability pipeline",
       "report_generate.md — Structured PDF synthesis",
@@ -20,52 +20,52 @@ const layers = [
   {
     number: "02",
     name: "Orchestration",
-    subtitle: "Intelligent routing",
-    color: "cyan",
+    subtitle: "Agentic Intelligence",
+    color: "indigo",
     description:
-      "The AI-powered decision layer that reads directives, calls execution scripts in the correct order, handles errors gracefully, and feeds lessons back into the system.",
+      "The AI-powered decision engine that routes directives, manages multi-model consensus, and autonomous error recovery.",
     details: [
-      "Reads directives → routes to execution scripts",
-      "Handles errors, retries, and edge cases autonomously",
-      "Root-cause-first — reports systemic issues, not symptoms",
+      "Interprets directives → resolves execution paths",
+      "Multi-agent consensus & validation logic",
+      "Self-correcting execution with automated retries",
     ],
-    path: "AI Layer",
+    path: "AI Engine",
   },
   {
     number: "03",
     name: "Execution",
-    subtitle: "Doing the work",
+    subtitle: "Deterministic Logic",
     color: "violet",
     description:
-      "Deterministic Python scripts that perform the actual operations — cloning repositories, running static analysis, auditing dependencies, and generating reports.",
+      "High-performance scripts that perform the actual operations — isolated cloning, deep-static analysis, and report generation.",
     details: [
       "clone_repository.py — Isolated workspace cloning",
-      "static_analysis.py — Security anti-pattern detection",
-      "dependency_audit.py — CVE database cross-reference",
-      "generate_report.py — Structured finding synthesis",
+      "static_analysis.py — Pattern-based vulnerability detection",
+      "dependency_audit.py — CVE cross-validation",
+      "generate_report.py — Finding synthesis & export",
     ],
     path: "execution/",
   },
 ];
 
 const colorMap: Record<string, { border: string; bg: string; text: string; glow: string }> = {
-  emerald: {
-    border: "border-emerald-400/30",
-    bg: "bg-emerald-400/5",
-    text: "text-emerald-400",
-    glow: "hover:shadow-[0_0_40px_rgba(74,222,128,0.08)]",
+  blue: {
+    border: "border-blue-100",
+    bg: "bg-blue-50/50",
+    text: "text-blue-600",
+    glow: "hover:shadow-[0_0_50px_rgba(37,99,235,0.1)]",
   },
-  cyan: {
-    border: "border-cyan-400/30",
-    bg: "bg-cyan-400/5",
-    text: "text-cyan-400",
-    glow: "hover:shadow-[0_0_40px_rgba(34,211,238,0.08)]",
+  indigo: {
+    border: "border-indigo-100",
+    bg: "bg-indigo-50/50",
+    text: "text-indigo-600",
+    glow: "hover:shadow-[0_0_50px_rgba(79,70,229,0.1)]",
   },
   violet: {
-    border: "border-violet-400/30",
-    bg: "bg-violet-400/5",
-    text: "text-violet-400",
-    glow: "hover:shadow-[0_0_40px_rgba(167,139,250,0.08)]",
+    border: "border-violet-100",
+    bg: "bg-violet-50/50",
+    text: "text-violet-600",
+    glow: "hover:shadow-[0_0_50px_rgba(124,58,237,0.1)]",
   },
 };
 
@@ -78,7 +78,7 @@ export default function Architecture() {
       ([entry]) => {
         if (entry.isIntersecting) setVisible(true);
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
@@ -88,31 +88,29 @@ export default function Architecture() {
     <section
       ref={sectionRef}
       id="architecture"
-      className="relative py-32 md:py-40 px-6 overflow-hidden"
+      className="relative py-32 md:py-48 px-6 overflow-hidden bg-gray-50"
     >
       {/* Background */}
-      <div className="absolute inset-0 bg-grid opacity-50"></div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+      <div className="absolute inset-0 bg-mesh opacity-40"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Section header */}
         <div
-          className={`mb-20 transition-all duration-1000 ${
+          className={`mb-24 transition-all duration-1000 ${
             visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-8 h-px bg-emerald-400"></div>
-            <span className="text-[10px] tracking-[0.4em] text-emerald-400 uppercase font-medium">
+            <span className="text-[10px] tracking-[0.4em] text-blue-600 uppercase font-bold">
               System Architecture
             </span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-5 text-gradient">
-            3-Layer Architecture
+          <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-6 text-gray-900">
+            Elite <span className="text-blue-600">3-Layer</span> Framework
           </h2>
-          <p className="text-white/40 text-sm md:text-base max-w-xl leading-relaxed">
-            A deterministic pipeline separating intent from decisions from execution.
-            Each layer is independently testable, auditable, and replaceable.
+          <p className="text-gray-500 text-sm md:text-base max-w-xl leading-relaxed font-medium">
+            A deterministic orchestration pipeline that decouples strategic intent 
+            from autonomous decision-making and operational execution.
           </p>
         </div>
 
@@ -123,43 +121,45 @@ export default function Architecture() {
             return (
               <div
                 key={layer.number}
-                className={`group relative p-8 rounded-xl border ${c.border} ${c.bg} ${c.glow} transition-all duration-500 hover:border-opacity-60 ${
+                className={`group relative p-10 rounded-3xl border border-black/5 bg-white shadow-premium ${c.glow} transition-all duration-700 hover:border-blue-600/10 ${
                   visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
                 }`}
                 style={{ transitionDelay: `${200 + i * 150}ms` }}
               >
                 {/* Layer number */}
-                <div className={`text-[11px] tracking-[0.3em] ${c.text} font-bold mb-6 flex items-center gap-3`}>
+                <div className={`text-[10px] tracking-[0.3em] ${c.text} font-bold mb-8 flex items-center gap-3`}>
                   <span className="font-mono">{layer.number}</span>
-                  <div className={`flex-1 h-px ${c.border}`}></div>
+                  <div className={`flex-1 h-px bg-gray-100`}></div>
                 </div>
 
                 {/* Title */}
-                <h3 className="text-2xl font-bold tracking-wide mb-1">{layer.name}</h3>
-                <p className="text-xs tracking-[0.2em] text-white/30 uppercase mb-5">
+                <h3 className="text-2xl font-bold tracking-tight mb-1.5 text-gray-900">{layer.name}</h3>
+                <p className="text-[10px] tracking-[0.25em] text-gray-400 uppercase mb-6 font-bold">
                   {layer.subtitle}
                 </p>
 
                 {/* Description */}
-                <p className="text-sm text-white/50 leading-relaxed mb-8">{layer.description}</p>
+                <p className="text-[13px] text-gray-500 leading-relaxed mb-10 font-medium">
+                  {layer.description}
+                </p>
 
                 {/* File list */}
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {layer.details.map((detail, j) => (
                     <div
                       key={j}
-                      className="flex items-start gap-2.5 text-xs text-white/35 font-mono"
+                      className="flex items-start gap-3 text-[11px] text-gray-400 font-mono font-bold"
                     >
-                      <span className={`${c.text} mt-0.5 text-[10px]`}>→</span>
+                      <span className={`${c.text} opacity-50`}>→</span>
                       <span className="leading-relaxed">{detail}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Path tag */}
-                <div className={`mt-8 inline-flex items-center gap-2 px-3 py-1.5 rounded-full ${c.bg} border ${c.border}`}>
-                  <span className={`w-1.5 h-1.5 rounded-full ${c.text.replace("text-", "bg-")}`}></span>
-                  <span className={`text-[9px] tracking-[0.2em] ${c.text} uppercase font-medium`}>
+                <div className={`mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-gray-50 border border-black/5 group-hover:bg-white transition-all`}>
+                  <div className={`w-1.5 h-1.5 rounded-full ${c.text.replace("text-", "bg-")} animate-pulse`}></div>
+                  <span className={`text-[9px] tracking-[0.2em] text-gray-500 uppercase font-bold`}>
                     {layer.path}
                   </span>
                 </div>
@@ -170,15 +170,15 @@ export default function Architecture() {
 
         {/* Connection lines visual (desktop) */}
         <div
-          className={`hidden lg:flex items-center justify-center mt-12 gap-4 transition-all duration-1000 delay-700 ${
+          className={`hidden lg:flex items-center justify-center mt-20 gap-6 transition-all duration-1000 delay-700 ${
             visible ? "opacity-100" : "opacity-0"
           }`}
         >
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-emerald-400/20 to-cyan-400/20"></div>
-          <div className="text-[9px] tracking-[0.3em] text-white/20 uppercase font-mono">
-            Deterministic Pipeline Flow
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-200 to-gray-200"></div>
+          <div className="text-[10px] tracking-[0.4em] text-gray-300 uppercase font-mono font-bold">
+            Sequential Orchestration Flow
           </div>
-          <div className="flex-1 h-px bg-gradient-to-r from-cyan-400/20 via-violet-400/20 to-transparent"></div>
+          <div className="flex-1 h-px bg-gradient-to-r from-gray-200 via-gray-200 to-transparent"></div>
         </div>
       </div>
     </section>
