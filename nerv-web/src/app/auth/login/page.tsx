@@ -5,26 +5,40 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getURL } from "@/utils/url";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
+
   const router = useRouter();
   const [supabase] = useState(() => createClient());
 
   // ✅ Check session on load
   useEffect(() => {
+    let mounted = true;
+
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
 
+      if (!mounted) return;
+
       if (data?.session) {
-        router.push("/dashboard");
+        router.replace("/dashboard"); // prevents back navigation to login
+      } else {
+        setCheckingSession(false);
       }
     };
 
     checkSession();
+
+    return () => {
+      mounted = false;
+    };
   }, [supabase, router]);
 
+  // ✅ Google login
   const handleGoogleLogin = async () => {
     setLoading(true);
     setError(null);
@@ -32,7 +46,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${getURL()}/auth/callback`,
         queryParams: {
           access_type: "offline",
         },
@@ -45,11 +59,20 @@ export default function LoginPage() {
     }
   };
 
+  // ⛔ prevent flicker before session check completes
+  if (checkingSession) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <p className="text-sm text-gray-500">Checking session...</p>
+      </main>
+    );
+  }
+
   return (
     <main className="min-h-screen flex items-center justify-center bg-white p-6 pt-32">
       <div className="w-full max-w-md bg-white border border-black/5 rounded-3xl p-8 md:p-12 shadow-premium relative overflow-hidden">
 
-        {/* Background */}
+        {/* Background blobs */}
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-blue-500/5 blur-3xl rounded-full"></div>
         <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-blue-500/5 blur-3xl rounded-full"></div>
 
@@ -70,6 +93,7 @@ export default function LoginPage() {
             </span>
           </Link>
 
+          {/* Heading */}
           <div className="text-center mb-10">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 mb-2">
               Operator Authorization
@@ -79,6 +103,7 @@ export default function LoginPage() {
             </p>
           </div>
 
+          {/* Login button */}
           <div className="flex flex-col gap-6">
             <button
               onClick={handleGoogleLogin}
@@ -96,12 +121,14 @@ export default function LoginPage() {
               {loading ? "Initializing..." : "Continue with Google"}
             </button>
 
+            {/* Error */}
             {error && (
-              <p className="text-xs text-red-600 bg-red-50 px-4 py-3 rounded-xl tracking-wide text-center">
+              <p className="text-xs text-red-600 bg-red-50 px-4 py-3 rounded-xl text-center">
                 {error}
               </p>
             )}
 
+            {/* Footer note */}
             <div className="mt-8 pt-8 border-t border-black/5 text-center">
               <p className="text-[9px] text-gray-400 leading-relaxed tracking-wider">
                 BY AUTHORIZING, YOU ACKNOWLEDGE THAT ALL OPERATIONS <br />
