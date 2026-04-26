@@ -7,6 +7,7 @@ export async function createClient() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
+    console.error("SERVER CRITICAL: Supabase environment variables (NEXT_PUBLIC_SUPABASE_URL/ANON_KEY) are missing in this environment!");
     return {
       auth: {
         getSession: async () => ({ data: { session: null }, error: null }),

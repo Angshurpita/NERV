@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/client";
+import { generateAuthToken, PlanType } from "@/utils/token";
 
 interface Profile {
   id: string;
@@ -28,25 +29,55 @@ export function DashboardClient({
 
   useEffect(() => {
     setMounted(true);
-    const localSaved = localStorage.getItem(`sub_${user.id}`);
-    if (localSaved) {
-      try {
-        const parsed = JSON.parse(localSaved);
-        const localSubs = Array.isArray(parsed) ? parsed : [parsed];
-        
-        // Merge DB and Local, prioritizing uniqueness by plan
-        const merged = [...dbSubscriptions];
-        localSubs.forEach(ls => {
-          if (!merged.some(ds => ds.plan.toUpperCase() === ls.plan.toUpperCase())) {
-            merged.push(ls);
-          }
-        });
-        setSubscriptions(merged);
-      } catch (e) {
-        console.error("Failed to parse local subscriptions", e);
+    
+    const syncSubscriptions = async () => {
+      const localSaved = localStorage.getItem(`sub_${user.id}`);
+      let currentSubs = [...dbSubscriptions];
+      
+      if (localSaved) {
+        try {
+          const parsed = JSON.parse(localSaved);
+          const localSubs = Array.isArray(parsed) ? parsed : [parsed];
+          
+          localSubs.forEach(ls => {
+            if (!currentSubs.some(ds => ds.plan.toUpperCase() === ls.plan.toUpperCase())) {
+              currentSubs.push(ls);
+            }
+          });
+        } catch (e) {
+          console.error("Failed to parse local subscriptions", e);
+        }
       }
-    }
-  }, [user.id, dbSubscriptions]);
+
+      // If absolutely NO subscriptions (even free), generate a FREE one
+      if (currentSubs.length === 0) {
+        const freeToken = generateAuthToken(user.id, "FREE");
+        const freeSub = {
+          plan: "FREE",
+          token: freeToken,
+          activatedAt: new Date().toISOString(),
+          expiresAt: null
+        };
+        
+        currentSubs = [freeSub];
+        
+        // Save to DB for persistence
+        await supabase.from("subscriptions").insert({
+          user_id: user.id,
+          plan: "FREE",
+          token: freeToken,
+          expires_at: null
+        });
+
+        // Save to Local
+        localStorage.setItem(`sub_${user.id}`, JSON.stringify([freeSub]));
+      }
+
+      setSubscriptions(currentSubs);
+    };
+
+    syncSubscriptions();
+  }, [user.id, dbSubscriptions, supabase]);
 
   const activePaidSubs = subscriptions.filter(s => s.plan?.toLowerCase() !== "free");
   const hasPaidPlan = activePaidSubs.length > 0;
@@ -159,10 +190,10 @@ export function DashboardClient({
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {[
-            { id: "free", name: "Free Tier", limit: "5 Scans / Mo", color: "border-white/10" },
-            { id: "starter", name: "Starter Tier", limit: "2 Scans / Day", color: "border-blue-500/10" },
-            { id: "pro", name: "Pro Tier", limit: "10 Scans / Day", color: "border-indigo-500/10" },
-            { id: "elite", name: "Elite Tier", limit: "20 Scans / Day", color: "border-blue-600/10" },
+            { id: "free", name: "Free Tier", limit: "2 Rule Scans / Day", color: "border-white/10" },
+            { id: "starter", name: "Starter Tier", limit: "2 AI Scans / Day", color: "border-blue-500/10" },
+            { id: "pro", name: "Pro Tier", limit: "10 AI Scans / Day", color: "border-indigo-500/10" },
+            { id: "elite", name: "Elite Tier", limit: "20 AI Scans / Day", color: "border-blue-600/10" },
             { id: "team black", name: "Team Black", limit: "Unlimited", color: "border-red-500/10", special: true },
           ].map((plan) => {
             const hasPaidPlan = subscriptions.some(s => s.plan?.toLowerCase() !== "free");

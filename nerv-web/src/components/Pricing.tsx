@@ -7,25 +7,25 @@ import { createClient } from "@/utils/supabase/client";
 const plans = [
   {
     id: "free",
-    name: "Free Plan",
+    name: "Free Tier",
     price: "$0",
     period: "/month",
     features: [
+      "2 Rule based scans / day",
       "5 AI scans / month",
-      "20 Rule Based Scans / Month",
-      "Reports Generation"
+      "Report Generation"
     ],
     delay: "100ms",
     highlight: false
   },
   {
     id: "starter",
-    name: "Starter Plan",
+    name: "Starter Tier",
     price: "$2",
     period: "/month",
     features: [
-      "2 AI scan / Day",
-      "5 Rule Based Scans / Day",
+      "2 AI scans / day",
+      "5 Rule Based Scans / day",
       "Report Generation"
     ],
     delay: "200ms",
@@ -33,11 +33,11 @@ const plans = [
   },
   {
     id: "pro",
-    name: "Pro Plan",
+    name: "Pro Tier",
     price: "$5",
     period: "/month",
     features: [
-      "10 AI scans / Day",
+      "10 AI based Scans / Day",
       "20 Rule Based Scans / Day",
       "Report Generation"
     ],
@@ -46,12 +46,12 @@ const plans = [
   },
   {
     id: "elite",
-    name: "Elite Plan",
+    name: "Elite Tier",
     price: "$10",
     period: "/month",
     features: [
       "20 AI scans / Day",
-      "50 Rule Based Scans / Day",
+      "30 Rule Based Scans / Day",
       "Report Generation"
     ],
     delay: "400ms",
@@ -63,8 +63,8 @@ const plans = [
     price: "$20",
     period: "/month",
     features: [
-      "Unlimited AI Usage / Month",
-      "Unlimited Rule based scans / Month",
+      "Unlimited AI scans",
+      "Unlimited Rule based scans",
       "Report Generation"
     ],
     delay: "500ms",

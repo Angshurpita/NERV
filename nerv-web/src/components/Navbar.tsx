@@ -15,7 +15,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
-  const supabase = createClient();
+  const [supabase] = useState(() => createClient());
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,7 +39,7 @@ export default function Navbar() {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, [supabase.auth]);
+  }, [supabase]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,14 +52,13 @@ export default function Navbar() {
   const handleGoogleLogin = async () => {
     setLoading(true);
     setMessage("");
-    
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
         queryParams: {
           access_type: 'offline',
-          prompt: 'consent',
         },
       },
     });
@@ -72,16 +71,16 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+    window.location.href = "/";
   };
 
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 transition-all duration-500 ${
-          scrolled
-            ? "py-4 bg-white/70 backdrop-blur-xl border-b border-black/5 shadow-sm"
-            : "py-8 bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-12 transition-all duration-500 ${scrolled
+          ? "py-4 bg-white/70 backdrop-blur-xl border-b border-black/5 shadow-sm"
+          : "py-8 bg-transparent"
+          }`}
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
@@ -111,11 +110,10 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`hover:text-gray-900 transition-all duration-500 ${
-                pathname === link.href
-                  ? "text-gray-900"
-                  : ""
-              }`}
+              className={`hover:text-gray-900 transition-all duration-500 ${pathname === link.href
+                ? "text-gray-900"
+                : ""
+                }`}
             >
               {link.name}
             </Link>

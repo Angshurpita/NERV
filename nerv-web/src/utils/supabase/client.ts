@@ -5,10 +5,14 @@ export function createClient() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
+    if (typeof window !== 'undefined') {
+      console.error("CRITICAL: Supabase environment variables are missing! Ensure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY are set in your deployment settings.");
+    }
     // Return a dummy client during build/prerender to prevent crashes
     const dummyClient = {
       auth: {
         getSession: async () => ({ data: { session: null }, error: null }),
+        getUser: async () => ({ data: { user: null }, error: null }),
         onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
         signInWithOAuth: async () => ({ error: new Error("Missing Supabase configuration") }),
         signOut: async () => {},
