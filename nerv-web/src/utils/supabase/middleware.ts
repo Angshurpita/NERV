@@ -41,7 +41,22 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  // protected routes logic here
+  // Handle cases where the user lands on a page with a code but no session (e.g. redirected to root)
+  const code = request.nextUrl.searchParams.get('code')
+  if (code && !user) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error) {
+      // Clear the code from the URL and redirect to dashboard
+      const nextUrl = new URL('/dashboard', request.url)
+      nextUrl.searchParams.delete('code')
+      return NextResponse.redirect(nextUrl)
+    }
+  }
+
+  // protected routes logic
+  if (!user && request.nextUrl.pathname.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
+  }
 
   return supabaseResponse
 }

@@ -3,10 +3,10 @@ import { createClient } from '@/utils/supabase/server'
 import { getURL } from '@/utils/url'
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
+  const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
   // if "next" is in param, use it as the redirect URL
-  const next = searchParams.get('next') ?? '/'
+  const next = searchParams.get('next') ?? '/dashboard'
 
   if (code) {
     const supabase = await createClient()
@@ -14,20 +14,21 @@ export async function GET(request: Request) {
     
     if (!error) {
       const forwardedHost = request.headers.get('x-forwarded-host')
-      const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
+      const isLocalEnv = process.env.NODE_ENV === 'development'
       
-      // If we have a forwarded host (common in load balancers/proxies like Netlify/Vercel)
+      if (isLocalEnv) {
+        return NextResponse.redirect(`${origin}${next}`)
+      }
+
       if (forwardedHost) {
+        const forwardedProto = request.headers.get('x-forwarded-proto') || 'https'
         return NextResponse.redirect(`${forwardedProto}://${forwardedHost}${next}`)
       }
       
-      // Fallback to our utility which handles env vars and window origin
-      const baseUrl = getURL()
-      return NextResponse.redirect(`${baseUrl}${next}`)
+      return NextResponse.redirect(`${getURL()}${next}`)
     }
   }
 
   // Fallback to error page or home
-  const baseUrl = getURL()
-  return NextResponse.redirect(`${baseUrl}/auth/auth-code-error`)
+  return NextResponse.redirect(`${getURL()}/auth/auth-code-error`)
 }
