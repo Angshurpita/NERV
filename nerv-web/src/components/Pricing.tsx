@@ -10,26 +10,31 @@ const plans = [
     id: "free",
     name: "Free Tier",
     price: "$0",
+    features: ["2 Rule scans/day", "5 AI scans total (monthly limit)"],
   },
   {
     id: "starter",
     name: "Starter Tier",
     price: "$2",
+    features: ["2 AI scans/day", "5 Rule scans/day"],
   },
   {
     id: "pro",
     name: "Pro Tier",
     price: "$5",
+    features: ["10 AI scans/day", "20 Rule scans/day"],
   },
   {
     id: "elite",
     name: "Elite Tier",
     price: "$10",
+    features: ["20 AI scans/day", "30 Rule scans/day"],
   },
   {
     id: "team black",
     name: "Team Black",
     price: "$20",
+    features: ["Unlimited access"],
   },
 ];
 
@@ -179,8 +184,19 @@ export default function Pricing() {
               </h3>
 
               <p className="text-xl font-semibold mb-4">
-                {plan.price}
+                {plan.price}<span className="text-sm text-gray-500 font-normal">/Month</span>
               </p>
+
+              <ul className="mb-6 space-y-2 text-xs text-gray-600 min-h-[60px]">
+                {plan.features.map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-2 leading-relaxed">
+                    <svg className="w-4 h-4 text-blue-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
 
               <button
                 disabled={finalActive}

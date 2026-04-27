@@ -88,7 +88,7 @@ function CheckoutContent() {
     <main className="min-h-screen bg-gray-50 text-gray-900 flex items-center justify-center p-6 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute inset-0 bg-dots opacity-[0.2] pointer-events-none"></div>
-      
+
       <div className="w-full max-w-lg bg-white border border-gray-100 rounded-[2.5rem] p-10 md:p-14 relative overflow-hidden shadow-premium">
         {/* Subtle Accent Glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-80 bg-blue-500/[0.03] blur-[100px] pointer-events-none"></div>
