@@ -9,31 +9,36 @@ const plans = [
   {
     id: "free",
     name: "Free Tier",
-    price: "$0",
+    price: "₹0",
+    amount: 0,
     features: ["2 Rule scans/day", "5 AI scans total (monthly limit)"],
   },
   {
     id: "starter",
     name: "Starter Tier",
-    price: "$2",
+    price: "₹149",
+    amount: 149,
     features: ["2 AI scans/day", "5 Rule scans/day"],
   },
   {
     id: "pro",
     name: "Pro Tier",
-    price: "$5",
+    price: "₹399",
+    amount: 399,
     features: ["10 AI scans/day", "20 Rule scans/day"],
   },
   {
     id: "elite",
     name: "Elite Tier",
-    price: "$10",
+    price: "₹699",
+    amount: 699,
     features: ["20 AI scans/day", "30 Rule scans/day"],
   },
   {
     id: "team black",
     name: "Team Black",
-    price: "$20",
+    price: "₹999",
+    amount: 999,
     features: ["Unlimited access"],
   },
 ];
@@ -184,7 +189,7 @@ export default function Pricing() {
               </h3>
 
               <p className="text-xl font-semibold mb-4">
-                {plan.price}<span className="text-sm text-gray-500 font-normal">/Month</span>
+                {plan.price}<span className="text-sm text-gray-500 font-normal">/month</span>
               </p>
 
               <ul className="mb-6 space-y-2 text-xs text-gray-600 min-h-[60px]">
@@ -201,9 +206,8 @@ export default function Pricing() {
               <button
                 disabled={finalActive}
                 onClick={() => {
-                  const amount = plan.price.replace("$", "");
                   router.push(
-                    `/checkout?plan=${plan.id}&amount=${amount}`
+                    `/checkout?plan=${plan.id}&amount=${plan.amount}`
                   );
                 }}
                 className={`w-full py-2 rounded-md text-xs font-bold ${finalActive
@@ -213,7 +217,7 @@ export default function Pricing() {
               >
                 {finalActive
                   ? "ACTIVE"
-                  : plan.price === "$0"
+                  : plan.amount === 0
                     ? "CURRENT"
                     : "UPGRADE"}
               </button>
