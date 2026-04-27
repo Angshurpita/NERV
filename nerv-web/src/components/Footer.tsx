@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="relative mt-auto bg-gray-50 border-t border-gray-100">
       <div className="max-w-6xl mx-auto px-6 py-24">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-16 mb-24">
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-4 mb-8">
@@ -48,7 +48,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Connect */}
+          {/* Ecosystem */}
           <div>
             <p className="text-[11px] tracking-[0.4em] text-gray-900 uppercase font-bold mb-8">
               Ecosystem
@@ -57,7 +57,19 @@ export default function Footer() {
               <a href="https://github.com/ANG13T/nerv-cli" target="_blank" rel="noopener noreferrer" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">GitHub Repository</a>
               <a href="https://www.npmjs.com/package/nerv-cli" target="_blank" rel="noopener noreferrer" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">NPM Package</a>
               <a href="#" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Security Protocols</a>
-              <a href="#" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Privacy Manifest</a>
+            </div>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <p className="text-[11px] tracking-[0.4em] text-gray-900 uppercase font-bold mb-8">
+              Legal
+            </p>
+            <div className="flex flex-col gap-4">
+              <a href="/return-policy" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Return Policy</a>
+              <a href="/refund-policy" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Refund Policy</a>
+              <a href="/privacy-policy" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Privacy Policy</a>
+              <a href="/disclaimer" className="text-[13px] text-gray-500 hover:text-blue-600 transition-all duration-300 font-normal tracking-wide">Disclaimer</a>
             </div>
           </div>
         </div>
