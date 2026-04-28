@@ -18,9 +18,9 @@ export const metadata: Metadata = {
   title: "NERV | Secure faster. Build smarter. Ship without fear.",
   description: "Secure faster. Build smarter. Ship without fear.",
   icons: {
-    icon: "/icon.png",
-    shortcut: "/icon.png",
-    apple: "/icon.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
   openGraph: {
     title: "NERV",
