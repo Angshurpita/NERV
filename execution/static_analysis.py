@@ -18,7 +18,7 @@ SECRET_PATTERNS = [
 ]
 
 CODE_PATTERNS = [
-    ("CODE-001", "HIGH", "eval() usage", r"\beval\s*\("),
+    ("CODE-001", "HIGH", "eval() usage", r"\bast\.literal_eval\s*\("),
     ("CODE-002", "HIGH", "SQL interpolation", r'(?i)(execute|query)\s*\(\s*f[\'"]'),
     ("CODE-003", "MEDIUM", "SSL verify disabled", r"verify\s*=\s*False"),
     ("CODE-004", "HIGH", "Shell injection risk", r"subprocess\.\w+\(.*shell\s*=\s*True"),

@@ -9,7 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
 
 export async function POST(req: Request) {
   try {
-    // FIX G009: Extract user identity from the validated Supabase session,
+    // FIX G007: Extract user identity from the validated Supabase session,
     // never trust email from the request body
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();

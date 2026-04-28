@@ -33,15 +33,12 @@ export async function POST(req: Request) {
       .update(body)
       .digest("hex");
 
-    // FIX G004: Use timing-safe comparison to prevent timing attacks
-    // Standard === leaks information about which character position differs
-    const expectedBuffer = Buffer.from(expectedSignature, 'utf8');
-    const receivedBuffer = Buffer.from(razorpay_signature, 'utf8');
+    // FIX G011: Use timing-safe comparison to prevent timing attacks
+    // Hash both the expected signature and received signature using sha256 to ensure exact same fixed length
+    const expectedHash = crypto.createHash('sha256').update(expectedSignature).digest();
+    const receivedHash = crypto.createHash('sha256').update(razorpay_signature).digest();
 
-    // Buffers must be the same length for timingSafeEqual
-    const isAuthentic =
-      expectedBuffer.length === receivedBuffer.length &&
-      crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
+    const isAuthentic = crypto.timingSafeEqual(expectedHash, receivedHash);
 
     if (isAuthentic) {
       // FIX G007: In production, you should fetch the order from Razorpay's API

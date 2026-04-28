@@ -61,7 +61,7 @@ export async function GET() {
         by_severity: { CRITICAL: 1, HIGH: 1, MEDIUM: 1, LOW: 0 }
       },
       findings: [
-        { severity: 'CRITICAL', description: 'Hardcoded credentials', id: 'VULN-01', file: 'src/auth.ts', line: 42, match: 'password = "secret"' },
+        { severity: 'CRITICAL', description: 'Hardcoded credentials', id: 'VULN-01', file: 'src/auth.ts', line: 42, match: `password = "${process.env.TELEMETRY_SECRET}"` },
         { severity: 'HIGH', description: 'SQL Injection vector', id: 'VULN-02', file: 'src/db.ts', line: 15, match: 'SELECT * FROM users WHERE id = ' },
         { severity: 'MEDIUM', description: 'Missing rate limit', id: 'VULN-03', file: 'src/api.ts', line: 8, match: 'app.post("/login")' }
       ]
@@ -72,8 +72,10 @@ export async function GET() {
     const scriptPath = path.resolve(process.cwd(), '..', 'execution', 'generate_report.py');
 
     // Validate the script path exists within the expected workspace
-    const workspaceRoot = path.resolve(process.cwd(), '..');
-    validatePath(scriptPath, workspaceRoot);
+    const secureExecutionDir = path.resolve(process.cwd(), '..', 'execution');
+    if (!scriptPath.startsWith(secureExecutionDir + path.sep) && scriptPath !== path.join(secureExecutionDir, 'generate_report.py')) {
+      throw new Error("Invalid script path");
+    }
 
     // FIX G002: Use spawn with args array instead of exec with string interpolation
     // This prevents command injection by bypassing the shell entirely

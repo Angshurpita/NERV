@@ -138,6 +138,16 @@ app.post('/api/scan', authMiddleware, async (req, res) => {
   }
 
   try {
+    const parsedUrl = new URL(targetUrl);
+    const hostname = parsedUrl.hostname;
+    
+    // Explicitly reject internal IP ranges and cloud metadata endpoints
+    const isInternal = /^(127\.|10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.|169\.254\.)/.test(hostname) || hostname === 'localhost';
+    
+    if (isInternal) {
+      return res.status(403).json({ error: 'SSRF blocked: internal IPs not allowed' });
+    }
+
     const result = await securityService.initiateScan(targetUrl, req.user.email);
     res.json(result);
   } catch (err) {

@@ -15,6 +15,7 @@ import shutil
 import logging
 import tempfile
 import subprocess
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -45,17 +46,30 @@ def clone_repository(target_url: str, workspace_dir: str = None) -> dict:
         "error": None,
     }
 
-    # Derive repo name from URL
+    # Derive repo name from URL and use os.path.basename to prevent traversal
     repo_name = target_url.rstrip("/").split("/")[-1]
     if repo_name.endswith(".git"):
         repo_name = repo_name[:-4]
+    repo_name = os.path.basename(repo_name)
     result["repo_name"] = repo_name
 
+    # Validate target_url against strict regex and flags
+    if not re.match(r'^https?://[a-zA-Z0-9_\-\./]+$', target_url) or '--upload-pack' in target_url or '-m' in target_url:
+        result["error"] = "Invalid git URL or disallowed flags detected"
+        logger.error(result["error"])
+        return result
+
     # Create isolated workspace
+    BASE_WORKSPACE = str(Path(tempfile.gettempdir()).resolve())
     if workspace_dir is None:
         workspace_dir = tempfile.mkdtemp(prefix="nerv_scan_")
     else:
+        workspace_dir = str(Path(workspace_dir).resolve())
         os.makedirs(workspace_dir, exist_ok=True)
+        if not workspace_dir.startswith(BASE_WORKSPACE):
+            result["error"] = "Workspace directory path traversal detected"
+            logger.error(result["error"])
+            return result
 
     clone_path = os.path.join(workspace_dir, repo_name)
 

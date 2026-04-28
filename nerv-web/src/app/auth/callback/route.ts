@@ -33,7 +33,10 @@ export async function GET(request: Request) {
 
     // FIX G008: Use hardcoded base URL from environment variable instead of
     // deriving from request.url origin, which can be spoofed via Host headers
-    const baseUrl = getURL();
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+    if (!baseUrl) {
+      return NextResponse.json({ error: "NEXT_PUBLIC_SITE_URL is not set" }, { status: 500 });
+    }
     return NextResponse.redirect(`${baseUrl}/dashboard`);
   } catch (err: any) {
     return NextResponse.json({ 
