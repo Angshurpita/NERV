@@ -2,6 +2,23 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { createClient } from "@/utils/supabase/server";
 
+// FIX G011: IP-based rate limiter — max 3 feedback submissions per 10 minutes per IP.
+// Prevents SMTP quota abuse and email flood attacks.
+const feedbackRateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const FEEDBACK_RATE_WINDOW_MS = 10 * 60_000; // 10 minutes
+const FEEDBACK_RATE_MAX = 3;
+
+function isFeedbackRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const entry = feedbackRateLimitMap.get(ip);
+  if (!entry || now > entry.resetTime) {
+    feedbackRateLimitMap.set(ip, { count: 1, resetTime: now + FEEDBACK_RATE_WINDOW_MS });
+    return false;
+  }
+  entry.count++;
+  return entry.count > FEEDBACK_RATE_MAX;
+}
+
 /**
  * Sanitize user input for inclusion in HTML email templates.
  * Prevents XSS via email content injection.
@@ -17,6 +34,16 @@ function sanitizeHtml(str: string): string {
 
 export async function POST(req: Request) {
   try {
+    // FIX G011: Rate-limit by IP — must come first to block unauthenticated floods too
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    if (isFeedbackRateLimited(clientIp)) {
+      return NextResponse.json(
+        { error: "Too many feedback submissions. Please wait before trying again." },
+        { status: 429 }
+      );
+    }
+
     // FIX G012: Extract user identity from the validated Supabase session,
     // never trust email from the request body
     const supabase = await createClient();

@@ -85,7 +85,7 @@ export async function GET() {
       '',        // dep_json_path (empty)
       outputMdPath
     ]);
-    
+
     // Read the generated markdown
     let reportMarkdown = "No report generated.";
     if (fs.existsSync(outputMdPath)) {
