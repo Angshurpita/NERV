@@ -61,7 +61,7 @@ export async function GET() {
         by_severity: { CRITICAL: 1, HIGH: 1, MEDIUM: 1, LOW: 0 }
       },
       findings: [
-        { severity: 'CRITICAL', description: 'Hardcoded credentials', id: 'VULN-01', file: 'src/auth.ts', line: 42, match: `password = "${process.env.TELEMETRY_SECRET}"` },
+        { severity: 'CRITICAL', description: 'Hardcoded credentials', id: 'VULN-01', file: 'src/auth.ts', line: 42, match: 'password = "********"' },
         { severity: 'HIGH', description: 'SQL Injection vector', id: 'VULN-02', file: 'src/db.ts', line: 15, match: 'SELECT * FROM users WHERE id = ' },
         { severity: 'MEDIUM', description: 'Missing rate limit', id: 'VULN-03', file: 'src/api.ts', line: 8, match: 'app.post("/login")' }
       ]

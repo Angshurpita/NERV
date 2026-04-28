@@ -32,6 +32,16 @@ def detect_manifests(target_dir: str) -> list:
     return found
 
 
+def sanitize_target_dir(raw_dir: str) -> str:
+    """Resolve and validate the target directory against an allowed workspace root."""
+    target_dir = os.path.abspath(raw_dir)
+    # Hardcoded secure workspace root — adjust to your deployment's workspace path
+    allowed_root = os.path.abspath(os.environ.get("NERV_WORKSPACE_ROOT", "/tmp/nerv-workspaces"))
+    if not target_dir.startswith(allowed_root + os.sep) and target_dir != allowed_root:
+        raise ValueError(f"Directory traversal blocked: {raw_dir} resolves outside allowed workspace")
+    return target_dir
+
+
 def run_npm_audit(target_dir: str) -> dict:
     pkg = os.path.join(target_dir, "package.json")
     if not os.path.exists(pkg):
@@ -58,4 +68,9 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print("Usage: python dependency_audit.py <target_dir>")
         sys.exit(1)
-    print(json.dumps(audit_directory(sys.argv[1]), indent=2))
+    try:
+        safe_dir = sanitize_target_dir(sys.argv[1])
+    except ValueError as e:
+        logger.error(str(e))
+        sys.exit(1)
+    print(json.dumps(audit_directory(safe_dir), indent=2))

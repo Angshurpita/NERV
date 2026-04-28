@@ -31,13 +31,14 @@ export async function GET(request: Request) {
       }, { status: 400 });
     }
 
-    // FIX G008: Use hardcoded base URL from environment variable instead of
-    // deriving from request.url origin, which can be spoofed via Host headers
+    // FIX G007: Use a URL constructor to strictly parse the base URL before redirecting.
+    // This prevents open redirect via malformed env var or host-header spoofing.
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
     if (!baseUrl) {
       return NextResponse.json({ error: "NEXT_PUBLIC_SITE_URL is not set" }, { status: 500 });
     }
-    return NextResponse.redirect(`${baseUrl}/dashboard`);
+    const safeUrl = new URL('/dashboard', baseUrl);
+    return NextResponse.redirect(safeUrl.toString());
   } catch (err: any) {
     return NextResponse.json({ 
       error: "Callback route crashed",
