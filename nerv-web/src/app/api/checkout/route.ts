@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-
+import { createClient } from '@/utils/supabase/server';
 import { getURL } from '@/utils/url';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
@@ -9,7 +9,20 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    // FIX G009: Extract user identity from the validated Supabase session,
+    // never trust email from the request body
+    const supabase = await createClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
+
+    // Use the verified email from Supabase session, ignore client-supplied email
+    const verifiedEmail = user.email;
     const baseUrl = getURL();
 
     const session = await stripe.checkout.sessions.create({
@@ -33,11 +46,12 @@ export async function POST(req: Request) {
       mode: 'subscription',
       success_url: `${baseUrl}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${baseUrl}/access?canceled=true`,
-      customer_email: email || undefined,
+      customer_email: verifiedEmail || undefined,
     });
 
     return NextResponse.json({ id: session.id, url: session.url });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('Checkout error:', error);
+    return NextResponse.json({ error: 'Checkout session creation failed' }, { status: 500 });
   }
 }

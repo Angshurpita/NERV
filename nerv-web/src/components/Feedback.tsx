@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 
 export default function Feedback() {
@@ -48,9 +48,24 @@ export default function Feedback() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // AbortController ref for cleanup on unmount (FIX G018/G019)
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      // Cancel any in-flight fetch on unmount
+      abortControllerRef.current?.abort();
+    };
+  }, []);
+
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
+
+    // Abort any previous in-flight request
+    abortControllerRef.current?.abort();
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
 
     setLoading(true);
     setMessage("");
@@ -59,7 +74,8 @@ export default function Feedback() {
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, description }),
+        body: JSON.stringify({ description }),
+        signal: controller.signal,
       });
 
       const data = await res.json();
@@ -70,12 +86,13 @@ export default function Feedback() {
       } else {
         setMessage(`Error: ${data.error}`);
       }
-    } catch (err) {
+    } catch (err: any) {
+      if (err?.name === 'AbortError') return; // Silently ignore aborted requests
       setMessage("Transmission failed. System error.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [email, description]);
 
   return (
     <section
@@ -136,10 +153,15 @@ export default function Feedback() {
 
           {/* Description */}
           <div className="flex flex-col gap-3">
-            <label className="text-[10px] tracking-[0.4em] text-gray-400 uppercase font-bold px-1">
+            <label
+              htmlFor="feedback-description"
+              className="text-[10px] tracking-[0.4em] text-gray-400 uppercase font-bold px-1"
+            >
               Briefing / Report
             </label>
             <textarea
+              id="feedback-description"
+              aria-label="Describe the anomaly or proposal"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Detail the anomaly or proposal..."
@@ -165,6 +187,7 @@ export default function Feedback() {
           <button
             type="submit"
             disabled={loading || !email}
+            aria-label={!email ? 'Login required to submit feedback' : loading ? 'Submitting feedback' : 'Submit feedback report'}
             className="group w-full py-5 bg-gray-900 text-white text-[11px] font-bold tracking-[0.3em] uppercase hover:bg-black disabled:opacity-20 disabled:hover:bg-gray-900 disabled:hover:text-white transition-all duration-500 rounded-xl flex items-center justify-center gap-3 shadow-premium"
           >
             {!email ? (

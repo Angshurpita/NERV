@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Report generator — synthesizes scan findings into structured reports."""
 
-import sys, json, logging
+import sys, json, logging, os
 from datetime import datetime
 from typing import Dict, Any
 
@@ -9,6 +9,41 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger(__name__)
 
 SEVERITY_EMOJI = {"CRITICAL": "🔴", "HIGH": "🟠", "MEDIUM": "🟡", "LOW": "🔵", "INFO": "⚪"}
+
+# FIX G010: Hardcoded allowed output directory for reports
+ALLOWED_OUTPUT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "reports"))
+
+
+def validate_output_path(output_path: str) -> str:
+    """
+    Validate that the output path is within an allowed directory.
+    Prevents path traversal attacks (../ sequences).
+    Falls back to temp directory if the reports directory doesn't exist.
+    """
+    import tempfile
+
+    # Use basename to strip any directory traversal
+    safe_filename = os.path.basename(output_path)
+    if not safe_filename:
+        safe_filename = "security_report.md"
+
+    # Ensure it has a safe extension
+    if not safe_filename.endswith(('.md', '.txt', '.json')):
+        safe_filename += '.md'
+
+    # Try the allowed output directory first, fall back to tmpdir
+    if os.path.isdir(ALLOWED_OUTPUT_DIR):
+        target_dir = ALLOWED_OUTPUT_DIR
+    else:
+        target_dir = tempfile.gettempdir()
+
+    resolved = os.path.abspath(os.path.join(target_dir, safe_filename))
+
+    # Double-check the resolved path is within the target directory
+    if not resolved.startswith(os.path.abspath(target_dir) + os.sep) and resolved != os.path.abspath(target_dir):
+        raise ValueError(f"Path traversal detected: {output_path}")
+
+    return resolved
 
 
 def generate_markdown_report(scan_results: dict, dep_results: dict = None) -> str:
@@ -68,7 +103,9 @@ def generate_report(scan_json_path: str, dep_json_path: str = None, output_path:
             dep = json.load(f)
 
     md = generate_markdown_report(scan, dep)
-    out = output_path or "security_report.md"
+
+    # FIX G010: Sanitize the output path to prevent arbitrary file writes
+    out = validate_output_path(output_path or "security_report.md")
     with open(out, "w") as f:
         f.write(md)
 

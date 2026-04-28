@@ -1,11 +1,12 @@
 import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
+import { getURL } from "@/utils/url";
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
   try {
-    const { searchParams, origin } = new URL(request.url);
+    const { searchParams } = new URL(request.url);
     const code = searchParams.get("code");
 
     if (!code) {
@@ -30,7 +31,10 @@ export async function GET(request: Request) {
       }, { status: 400 });
     }
 
-    return NextResponse.redirect(`${origin}/dashboard`);
+    // FIX G008: Use hardcoded base URL from environment variable instead of
+    // deriving from request.url origin, which can be spoofed via Host headers
+    const baseUrl = getURL();
+    return NextResponse.redirect(`${baseUrl}/dashboard`);
   } catch (err: any) {
     return NextResponse.json({ 
       error: "Callback route crashed",
