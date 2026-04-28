@@ -17,6 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "NERV | Secure faster. Build smarter. Ship without fear.",
   description: "Secure faster. Build smarter. Ship without fear.",
+  icons: {
+    icon: "/icon.png",
+    shortcut: "/icon.png",
+    apple: "/icon.png",
+  },
   openGraph: {
     title: "NERV",
     description: "Secure faster. Build smarter. Ship without fear.",
