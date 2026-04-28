@@ -10,7 +10,7 @@ export default function Footer() {
             <div className="flex items-center gap-4 mb-8">
               <div className="relative w-8 h-8">
                 <Image
-                  src="/nerv-logo.png"
+                  src="/logo.png"
                   alt="NERV Logo"
                   fill
                   className="object-contain"

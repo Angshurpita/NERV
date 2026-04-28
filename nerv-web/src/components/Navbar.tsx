@@ -93,7 +93,7 @@ export default function Navbar() {
         <Link href="/" className="flex items-center gap-2 group">
           <div className="relative w-8 h-8">
             <Image
-              src="/nerv-logo.png"
+              src="/logo.png"
               alt="NERV Logo"
               fill
               className="object-contain opacity-90 group-hover:opacity-100 transition-opacity"
@@ -185,7 +185,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 mb-12 justify-center">
               <div className="relative w-7 h-7">
                 <Image
-                  src="/nerv-logo.png"
+                  src="/logo.png"
                   alt="NERV Logo"
                   fill
                   className="object-contain"

@@ -37,7 +37,7 @@ export default function Logos() {
             <div className="group flex items-center gap-4 transition-all duration-500">
               <div className="relative w-8 h-8 transition-transform duration-500 group-hover:scale-110">
                 <Image
-                  src="/nerv-logo.png"
+                  src="/logo.png"
                   alt="NERV"
                   fill
                   className="object-contain"

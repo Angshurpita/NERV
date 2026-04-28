@@ -122,7 +122,7 @@ function CheckoutContent() {
         name: "NERV-VIPER",
         description: `${planName.toUpperCase()} Plan — Monthly Subscription`,
         order_id: orderData.orderId,
-        image: "/nerv-logo.png",
+        image: "/logo.png",
         prefill: {
           email: user.email,
           name: user.user_metadata?.full_name || "",
@@ -214,7 +214,7 @@ function CheckoutContent() {
 
           <div className="relative z-10">
             <div className="flex items-center gap-4 mb-14">
-              <Image src="/nerv-logo.png" alt="NERV" width={28} height={28} />
+              <Image src="/logo.png" alt="NERV" width={28} height={28} />
               <span className="text-[10px] tracking-[0.5em] font-bold uppercase text-gray-400">Secure Node Authorization</span>
             </div>
 
